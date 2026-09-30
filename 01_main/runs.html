@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Run Log — UTRC</title>
+<meta name="description" content="Every UTRC run, filed by date. Photos and clips from Monday, Wednesday and Saturday runs across Toronto.">
+<meta name="theme-color" content="#F7F5F0">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<meta property="og:title" content="UTRC Run Log">
+<meta property="og:description" content="Every run, filed by date.">
+<meta property="og:image" content="assets/img/icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<!-- Theme, decided before anything paints so a dark-mode visitor sees no white flash.
+     PREFERS=false means the site opens light unless the visitor chose otherwise. -->
+<script>(function(d){d.classList.add('js');var PREFERS=false,t=null;
+try{t=localStorage.getItem('utrc-theme')}catch(e){}
+if(t!=='dark'&&t!=='light')t=PREFERS&&matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+d.dataset.theme=t;})(document.documentElement);</script>
+
+</head>
+<body>
+
+<header id="nav"></header>
+
+<section class="phead on-dark">
+  <div class="phead__bg"></div>
+  <div class="phead__in">
+    <p class="eyebrow">The run log</p>
+    <h1 class="display h-xl">Every run,<br>by date.</h1>
+    <p class="lede">
+      Mondays, Wednesdays and Saturdays — photographed, dated and filed.
+      Scroll for the whole archive, or jump straight to the day you&rsquo;re looking for.
+    </p>
+  </div>
+</section>
+
+<!-- Parked: moving banner, hidden. Unwrap the <template> to restore. -->
+<template data-parked="marquee">
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span>Mon</span><span>Wed</span><span>Sat</span>
+    <span>Repeat</span><span>No one left behind</span>
+  </div>
+</div>
+</template>
+
+<section class="sec">
+  <div class="shell">
+
+    <h2 class="sr-only">Filter runs</h2>
+    <div class="filters" role="group" aria-label="Filter by run type">
+      <button class="chip" data-filter="all" aria-pressed="true">All runs</button>
+      <button class="chip" data-filter="monday" aria-pressed="false">Monday</button>
+      <button class="chip" data-filter="wednesday" aria-pressed="false">Wednesday</button>
+      <button class="chip" data-filter="saturday" aria-pressed="false">Saturday</button>
+      <button class="chip" data-filter="special" aria-pressed="false">Special</button>
+    </div>
+
+    <h2 class="sr-only">Jump to a month</h2>
+    <nav id="monthNav" class="filters" aria-label="Jump to month"
+         style="margin-bottom:clamp(30px,4vw,56px);opacity:.8"></nav>
+
+    <div id="gallery"></div>
+
+  </div>
+</section>
+
+<section class="cta">
+  <img class="cta__mark" src="assets/img/utrc-logo-white.png" alt="" aria-hidden="true">
+  <div class="shell">
+    <p class="eyebrow">Get in the next one</p>
+    <h2 class="display h-xl" data-reveal>Show up.<br>Get the photo.</h2>
+    <p class="lede" data-reveal style="margin-top:1.4rem">
+      Every run ends with a group photo on the steps. Yours goes up here by the weekend.
+    </p>
+    <div class="btn-row" style="margin-top:2.2rem" data-reveal>
+      <a class="btn" href="join.html" data-magnetic>New runner guide <span class="arrow">&rarr;</span></a>
+      <a class="btn btn--ghost" href="index.html#schedule">This week&rsquo;s runs</a>
+    </div>
+  </div>
+</section>
+
+<footer id="foot"></footer>
+
+<script src="gallery/runs.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

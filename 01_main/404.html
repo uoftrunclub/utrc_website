@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wrong Turn — UTRC</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F7F5F0">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<!-- Theme, decided before anything paints so a dark-mode visitor sees no white flash.
+     PREFERS=false means the site opens light unless the visitor chose otherwise. -->
+<script>(function(d){d.classList.add('js');var PREFERS=false,t=null;
+try{t=localStorage.getItem('utrc-theme')}catch(e){}
+if(t!=='dark'&&t!=='light')t=PREFERS&&matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+d.dataset.theme=t;})(document.documentElement);</script>
+</head>
+<body>
+
+<header id="nav"></header>
+
+<section class="hero on-dark" style="min-height:88svh">
+  <div class="hero__bg"></div>
+  <div class="hero__grid"></div>
+  <img class="hero__mark" src="assets/img/utrc-logo.png" alt="" aria-hidden="true">
+
+  <div class="hero__in">
+    <p class="eyebrow">Error 404</p>
+    <h1 class="display h-xxl hero__title">
+      <span class="line"><span class="stroke">Wrong</span></span>
+      <span class="line"><span>Turn<span class="red">.</span></span></span>
+    </h1>
+    <div class="hero__meta">
+      <p class="lede">
+        This page doesn&rsquo;t exist &mdash; but the sweeper&rsquo;s here, so you&rsquo;re not
+        getting left behind. Head back and pick up the route.
+      </p>
+      <div class="btn-row">
+        <a class="btn" href="index.html" data-magnetic>Back to the start <span class="arrow">&rarr;</span></a>
+        <a class="btn btn--ghost" href="runs.html">Run log</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="foot"></footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

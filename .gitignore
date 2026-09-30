@@ -1,0 +1,35 @@
+# ---------------------------------------------------------------------------
+# UTRC website
+# ---------------------------------------------------------------------------
+
+# Credentials. Nothing here, ever — the Drive key lives in GitHub Actions
+# secrets, not on disk.
+.env
+*.key.json
+service-account*.json
+credentials*.json
+
+# Generated
+_deploy/
+node_modules/
+01_main/gallery/runs.js.tmp
+
+# Run photos. Synced from Google Drive by the Actions workflow and rebuilt in
+# the runner, so they never enter git — that would bloat the repo permanently
+# at three runs a week. Matches the dated folders only; runs.js and README.txt
+# beside them stay tracked.
+01_main/gallery/[0-9][0-9][0-9][0-9]-*/
+
+# Local archive and source material. Big, unchanging, and not the repo's job —
+# these are backed up to the club Google Drive instead.
+reference/
+00_early_drafts/
+scratch/
+
+# OS / editor cruft
+Thumbs.db
+desktop.ini
+.DS_Store
+*.swp
+.vscode/
+.idea/

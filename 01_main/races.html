@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Race Board — UTRC</title>
+<meta name="description" content="Races UTRC runners are training for, and the club results board — finishing times, personal bests and first-ever distances.">
+<meta name="theme-color" content="#F7F5F0">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<meta property="og:title" content="UTRC Race Board">
+<meta property="og:description" content="Races we're training for, and every club result worth shouting about.">
+<meta property="og:image" content="assets/img/icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<!-- Theme, decided before anything paints so a dark-mode visitor sees no white flash.
+     PREFERS=false means the site opens light unless the visitor chose otherwise. -->
+<script>(function(d){d.classList.add('js');var PREFERS=false,t=null;
+try{t=localStorage.getItem('utrc-theme')}catch(e){}
+if(t!=='dark'&&t!=='light')t=PREFERS&&matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+d.dataset.theme=t;})(document.documentElement);</script>
+
+</head>
+<body>
+
+<header id="nav"></header>
+
+<section class="phead on-dark">
+  <div class="phead__bg"></div>
+  <div class="phead__in">
+    <p class="eyebrow">Race board</p>
+    <h1 class="display h-xl">Times worth<br>shouting about.</h1>
+    <p class="lede">
+      Wednesday runs are where it starts. This is where it ends up — races the club is
+      training for, and every result our runners bring back.
+    </p>
+  </div>
+</section>
+
+<!-- Parked: moving banner, hidden. Unwrap the <template> to restore. -->
+<template data-parked="marquee">
+<div class="marquee marquee--blue" aria-hidden="true">
+  <div class="marquee__track">
+    <span>First 5K</span><span>First half</span><span>First marathon</span>
+    <span>All of it counts</span>
+  </div>
+</div>
+</template>
+
+<!-- ================================================== UPCOMING ========= -->
+<!-- VERIFY: race months are the usual annual slots — confirm each year's
+     actual date and registration deadline before pointing people at them. -->
+<section class="sec">
+  <div class="shell">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow">On the calendar</p>
+        <h2 class="display h-xl" data-reveal>Races<br>we run</h2>
+      </div>
+      <p class="lede" data-reveal style="--d:120ms;max-width:34ch">
+        We train towards these together and travel to them as a group. Exact dates and
+        any club discount codes go up on Instagram.
+      </p>
+    </div>
+
+    <div class="sched">
+      <div class="run" data-reveal>
+        <div class="run__day">October</div>
+        <div class="run__body">
+          <div class="run__where">TCS Toronto Waterfront Marathon</div>
+          <div class="run__meta">Marathon, half and 5K. The big one — most of the club is out either running or cheering.</div>
+        </div>
+        <div class="run__time">42.2K / 21.1K / 5K</div>
+        <div class="run__dist">Canada Running Series</div>
+      </div>
+      <div class="run" data-reveal style="--d:70ms">
+        <div class="run__day">April</div>
+        <div class="run__body">
+          <div class="run__where">Toronto Spring Run-Off</div>
+          <div class="run__meta">High Park. Hilly, brutal, over before you've decided how you feel about it.</div>
+        </div>
+        <div class="run__time">8K / 5K</div>
+        <div class="run__dist">Canada Running Series</div>
+      </div>
+      <div class="run" data-reveal style="--d:140ms">
+        <div class="run__day">May</div>
+        <div class="run__body">
+          <div class="run__where">Sporting Life 10K</div>
+          <div class="run__meta">Downhill down Yonge. The best possible race for a first 10K.</div>
+        </div>
+        <div class="run__time">10K</div>
+        <div class="run__dist">Road race</div>
+      </div>
+      <div class="run" data-reveal style="--d:210ms">
+        <div class="run__day">Term end</div>
+        <div class="run__body">
+          <div class="run__where">UTRC Club 5K time trial</div>
+          <div class="run__meta">Our own race, on our own loop. Everyone runs, everyone gets a time, nobody pays an entry fee.</div>
+        </div>
+        <div class="run__time">5K</div>
+        <div class="run__dist">Club event</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================== RESULTS ========= -->
+<section class="sec sec--tight" id="results" style="border-top:1px solid var(--line)">
+  <div class="shell">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow">Club results</p>
+        <h2 class="display h-xl" data-reveal>The<br>board</h2>
+      </div>
+      <p class="lede" data-reveal style="--d:120ms;max-width:34ch">
+        Ran something? Send us the result and we&rsquo;ll put it up — first 5Ks get the same
+        billing as marathon PBs.
+      </p>
+    </div>
+
+    <div id="raceBoard"></div>
+
+    <div class="btn-row" style="margin-top:2.4rem" data-reveal>
+      <a class="btn" data-mail href="#" data-magnetic>Send us a result <span class="arrow">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <img class="cta__mark" src="assets/img/utrc-logo-white.png" alt="" aria-hidden="true">
+  <div class="shell">
+    <p class="eyebrow">Every race starts on a Wednesday</p>
+    <h2 class="display h-xl" data-reveal>Train with<br>the club.</h2>
+    <div class="btn-row" style="margin-top:2.4rem" data-reveal>
+      <a class="btn" href="index.html#schedule" data-magnetic>This week&rsquo;s runs <span class="arrow">&rarr;</span></a>
+      <a class="btn btn--ghost" href="join.html">New runner guide</a>
+    </div>
+  </div>
+</section>
+
+<footer id="foot"></footer>
+
+<script src="assets/js/main.js"></script>
+
+<script>
+/* ==========================================================================
+   RACE RESULTS — add a line per result. Newest first.
+     name  : the runner
+     race  : which race, and the year
+     dist  : distance / category  (shown small, under the name)
+     time  : finishing time as you want it displayed
+     pb    : true  -> red "PB" flag
+     first : true  -> red "1ST EVER" flag  (use for debut distances)
+   ========================================================================== */
+const RACES = [
+  // { name:'Jane Doe',  race:'TCS Toronto Waterfront Marathon 2026', dist:'Half marathon', time:'1:38:22', pb:true },
+  // { name:'John Doe',  race:'Sporting Life 10K 2026',               dist:'10K',           time:'44:07',   first:true },
+];
+
+(function () {
+  const host = document.getElementById('raceBoard');
+  if (!host) return;
+
+  if (!RACES.length) {
+    host.innerHTML = `
+      <div class="empty">
+        <p class="display h-md" style="margin-bottom:.7rem">The board is open</p>
+        <p class="muted" style="max-width:56ch;margin:0 auto">
+          Nothing posted yet this season. Add results in the
+          <code>RACES</code> list at the bottom of <code>races.html</code> &mdash;
+          one line each, newest first.
+        </p>
+      </div>`;
+    return;
+  }
+
+  const esc = s => String(s).replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  host.innerHTML = RACES.map((r, i) => `
+    <div class="race" data-reveal style="--d:${i * 50}ms">
+      <div class="race__bib">${String(i + 1).padStart(3, '0')}</div>
+      <div>
+        <div class="race__name">${esc(r.name)}</div>
+        <div class="race__sub">${esc(r.race)}${r.dist ? ' &middot; ' + esc(r.dist) : ''}</div>
+      </div>
+      <div class="race__time">${esc(r.time)}${
+        r.pb ? '<span class="race__pb">PB</span>' :
+        r.first ? '<span class="race__pb">1st ever</span>' : ''}</div>
+    </div>`).join('');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+I'd like to make a website for my run club (university of toronto run club). 
+
+The website should showcase our team, energy and provide a good place for both runners and potential collborators to learn more about us. 
+
+To start, refer to "sarasa research poster.pdf" to see what kind of information we'd like to include on the website. Use this as a rough guide for what sections to have on the website, but feel free to add your own ideas, or suggest ideas if you'd like.
+
+In addition, I'd also like to add a media or gallary section where we can easily post and upload the photos and videos that we've taken on each run. Ideally, this gallery should be kind of like a blog post update (but without the words) i.e. I'd like to have the date be clear for when each of these run photos were posted so people can easily find what they're looking for. We usually have a run every monday, wednesday and saturday. 
+
+For the design, look through some of the other images that I've inlcuded within the reference folder for styling cues that we'd like to follow. When making the website make sure to use our new UTRC logo ("UTRC Logo.png") as the one included in "sarasa research poster.pdf" is from last year and depricated.
+
+Otherwise, try your best to create a modern feel for the website; also feel free to show off your coding abilities and add cool flashy features if you feel like it would be suitable :). 
+
+Finally ask for my input before making any key design decisions
+
+
+
+=====
+
+this is great! can you help me package everything relevant to this website under a new folder named "01_main_draft"?
+
+Then in three other folders can you create three more websites to explore some other styles for the website? 
+
+Specifically, I'm interseted in seeing what you can come up with by following each of the style options that you gave me here (since we did the street poster red option already, ignore that one, but do all the other three below) . All of them seem pretty interesting so I want to explore all those options as well.
+
+Since I'm just intrested in the styling, feel free to drastically simplify the website for each of these new samples. e.x. Feel free to just make a main home page. All the other pages can wait for now. 
+
+Otherwise, the objectives and goals of all of the website continues to remain the same. Feel free to reference the reference images/pdf and my origianl prompt for reminders on what my main info and styling goals are.
