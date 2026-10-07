@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>copy test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body style="padding:60px">
+
+<div class="btn-row">
+  <a class="btn" data-mail href="#">Email the club <span class="arrow">&rarr;</span></a>
+</div>
+
+<pre id="out" style="margin-top:40px;font-size:14px;line-height:1.8"></pre>
+
+<script src="assets/js/main.js"></script>
+<script>
+addEventListener('load', function () {
+  var b = document.querySelector('a.btn[data-mail]');
+  var out = document.getElementById('out');
+  var lines = [];
+
+  lines.push('BEFORE');
+  lines.push('  label : ' + JSON.stringify(b.textContent.trim()));
+  lines.push('  href  : ' + b.getAttribute('href'));
+  lines.push('  class : ' + JSON.stringify(b.className));
+
+  b.click();
+
+  setTimeout(function () {
+    lines.push('');
+    lines.push('AFTER CLICK');
+    lines.push('  label : ' + JSON.stringify(b.textContent.trim()));
+    lines.push('  class : ' + JSON.stringify(b.className));
+    lines.push('  bg    : ' + getComputedStyle(b).backgroundColor);
+    out.textContent = lines.join('\n');
+  }, 500);
+});
+</script>
+</body>
+</html>

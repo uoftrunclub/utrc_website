@@ -11,6 +11,7 @@ credentials*.json
 
 # Generated
 _deploy/
+_drive-upload/
 node_modules/
 01_main/gallery/runs.js.tmp
 

@@ -6,8 +6,8 @@
 
 const SITE = {
   /* ---- CONFIRM THESE THREE BEFORE YOU GO LIVE -------------------------- */
-  email:     'hello@utrc.ca',              // ← club inbox (placeholder)
-  instagram: 'https://instagram.com/utrc', // ← real @handle URL (placeholder)
+  email:     'universityoftorontorunclub@gmail.com',
+  instagram: 'https://www.instagram.com/uoftrunclub/',
   strava:    '',                           // ← optional club Strava URL
   /* ---------------------------------------------------------------------- */
 
@@ -888,6 +888,63 @@ function boot() {
   /* email + social links marked with data-mail / data-ig */
   $$('[data-mail]').forEach(a => { a.href = 'mailto:' + SITE.email; if (!a.textContent.trim()) a.textContent = SITE.email; });
   $$('[data-ig]').forEach(a => { a.href = SITE.instagram; });
+  mountCopyEmail();
+}
+
+/* Clipboard, with a fallback for browsers that refuse navigator.clipboard
+   outside a secure context — opening the site over file:// hits this. */
+async function copyText(text) {
+  try {
+    if (navigator.clipboard && isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch (_) { /* fall through to the old way */ }
+
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:-1000px;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand('copy');
+    ta.remove();
+    return ok;
+  } catch (_) {
+    return false;
+  }
+}
+
+/* The email buttons copy the address rather than firing up a mail client.
+   The mailto: href stays on the element, so middle-click, right-click and
+   a no-JS visitor all still get the normal behaviour. */
+function mountCopyEmail() {
+  $$('a.btn[data-mail]').forEach(btn => {
+    const original = btn.innerHTML;
+    let timer = null;
+
+    btn.setAttribute('aria-live', 'polite');
+
+    btn.addEventListener('click', async e => {
+      e.preventDefault();
+      const ok = await copyText(SITE.email);
+
+      if (!ok) {                       /* clipboard blocked — do the old thing */
+        location.href = 'mailto:' + SITE.email;
+        return;
+      }
+
+      clearTimeout(timer);
+      btn.classList.add('is-copied');
+      btn.textContent = 'Club email copied!';
+
+      timer = setTimeout(() => {
+        btn.classList.remove('is-copied');
+        btn.innerHTML = original;
+      }, 2600);
+    });
+  });
 }
 
 document.readyState === 'loading'
