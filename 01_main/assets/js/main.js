@@ -83,7 +83,7 @@ const SITE = {
     ],
     leaders: [
       { name: 'Nikita Khesin', photo: 'nikita-khesin.jpg',
-        study: 'Mechanical Engineering 2A',
+        study: '2nd year, Mechanical Engineering',
         route: 'Wherever, so long as it’s raining', food: 'My protein tub' },
       { name: 'Savannah Byrne', photo: 'savannah-byrne.jpg',
         study: '1st year MASc, Materials Science & Engineering',
@@ -98,7 +98,7 @@ const SITE = {
         study: '3rd year, Physiology & Nutritional Science, Philosophy minor',
         route: 'Ramsden Park down to the Don Valley', food: 'A big sandwich' },
       { name: 'Ayaan Faruqui', photo: 'ayaan-faruqui.jpg',
-        study: 'Physiology & Molecular Genetics',
+        study: '2nd year, Physiology & Molecular Genetics',
         route: 'No route — getting lost in the city', food: 'Shawarma, Shelby’s or Osmow’s' },
       { name: 'Claudia Tome', photo: 'claudia-tome.jpg',
         study: '4th year, Political Science and Book & Media Studies',

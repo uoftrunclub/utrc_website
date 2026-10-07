@@ -751,7 +751,7 @@ html[data-theme="dark"] .card__glow{background:radial-gradient(circle,rgba(220,5
   transition:transform .5s var(--ease),background .4s;
 }
 .person:hover{transform:translateY(-5px);background:var(--red)}
-.person:nth-child(even):hover{background:var(--blue)}
+.person:nth-child(odd):hover{background:var(--blue)}
 .person:hover .person__name{color:#fff}
 .person:hover .person__role{color:#fff}
 .person:hover .person__note{color:rgba(255,255,255,.85)}
@@ -760,7 +760,7 @@ html[data-theme="dark"] .card__glow{background:radial-gradient(circle,rgba(220,5
   letter-spacing:.18em;text-transform:uppercase;color:var(--accent-text);
   transition:color .35s;
 }
-.person:nth-child(even) .person__role{color:var(--accent-2)}
+.person:nth-child(odd) .person__role{color:var(--accent-2)}
 .person__name{
   font-family:var(--f-display);text-transform:uppercase;
   font-size:clamp(1.45rem,2.6vw,2.05rem);
@@ -802,7 +802,7 @@ html[data-theme="dark"] .card__glow{background:radial-gradient(circle,rgba(220,5
   transition:color .35s;
 }
 .person__meta dt::after{content:":"}
-.person:nth-child(even) .person__meta dt{color:var(--accent-2)}
+.person:nth-child(odd) .person__meta dt{color:var(--accent-2)}
 .person__meta dd{display:inline;margin:0 0 0 .4em;color:var(--fg-soft);transition:color .35s}
 .person:hover .person__meta dt{color:rgba(255,255,255,.75)}
 .person:hover .person__meta dd{color:rgba(255,255,255,.9)}
