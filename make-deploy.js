@@ -22,8 +22,10 @@ const SRC     = path.join(ROOT, '01_main');
 const OUT     = path.join(ROOT, '_deploy');
 const PRIVATE = process.argv.includes('--private');
 
+/* Files that never reach the host. A leading underscore marks scratch work --
+   test harnesses and the like -- so it is excluded by convention. */
 const DEV_FILE = n =>
-  /\.(ps1|md)$/i.test(n) || n === '.gitignore' || n === 'README.txt';
+  /\.(ps1|md)$/i.test(n) || n === '.gitignore' || n === 'README.txt' || n.startsWith('_');
 
 function copyDir(from, to) {
   fs.mkdirSync(to, { recursive: true });
