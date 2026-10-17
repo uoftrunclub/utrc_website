@@ -82,12 +82,15 @@ All three live in one place: the `SITE` block at the top of
 [`assets/js/main.js`](assets/js/main.js). Change them once and every page updates.
 
 ```js
-email:     'hello@utrc.ca',              // ← the real club inbox
-instagram: 'https://instagram.com/utrc', // ← the real @handle URL
+email:     'universityoftorontorunclub@gmail.com',
+instagram: 'https://www.instagram.com/uoftrunclub/',
 strava:    '',                           // ← optional; leave '' to hide the icon
 ```
 
-The current values are **placeholders** and will not reach anybody.
+Both are live. The **Email the club** buttons copy the address to the clipboard
+and turn green rather than opening a mail client; the `mailto:` href stays on
+them, so right-click, middle-click and a no-JS visitor all still get the normal
+behaviour, and the footer keeps a plain `mailto:` link.
 
 ---
 

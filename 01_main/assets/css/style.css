@@ -255,6 +255,9 @@ h1,h2,h3,h4{margin:0;font-weight:400;line-height:.86;letter-spacing:-.01em}
 .btn.is-copied{
   --bg-b:var(--green);
   --fg-b:#fff;
+  background:var(--green);   /* set directly: overriding the token alone does
+                                not repaint the shorthand in Blink */
+  color:#fff;
   box-shadow:none;
 }
 .btn.is-copied::after{display:none}

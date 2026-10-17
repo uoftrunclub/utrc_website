@@ -65,10 +65,9 @@ post heading and the date drives the sort. Re-run `make-deploy.js` afterwards.
 These are still placeholders or unverified — all flagged in `01_main/README.md`
 and in `VERIFY` comments in the HTML:
 
-- **Club email and Instagram URL** — `hello@utrc.ca` and `instagram.com/utrc`,
-  in the `SITE` block at the top of `01_main/assets/js/main.js`. They are live
-  links on every page.
-- **Exec roster** — transcribed from the 2025/26 partnership package.
+- **Exec roster** — the 2026/27 roster is in the `SITE.team` block at the top
+  of `01_main/assets/js/main.js`, transcribed from the club's own Instagram
+  post. Seventeen run leaders are claimed in the copy; ten are pictured.
 - **FAQ answers** — drafted from the deck and Instagram. Confirm the fee,
   eligibility and cancellation lines.
 - **Gallery photos** — samples pulled from the partnership deck and dated to
