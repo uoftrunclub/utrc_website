@@ -9,6 +9,7 @@ _deploy/            generated — what you upload
 reference/          source material (logo, partnership deck, style refs)
 serve.js            local preview
 make-deploy.js      builds _deploy from 01_main
+GIT.md              how to commit and push from a terminal
 prompts.txt         the original brief
 ```
 
