@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B · schematic grid — UTRC (draft)</title>
+<meta name="description" content="Never run with UTRC before? Here's exactly what happens: where to meet, the routes, what to bring, what to wear at any temperature, and answers to the questions everyone asks.">
+<meta name="theme-color" content="#F7F5F0">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<meta property="og:title" content="New Runner Guide — UTRC">
+<meta property="og:description" content="What to expect on your first run with the University of Toronto Run Club.">
+<meta property="og:image" content="assets/img/icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<!-- Theme, decided before anything paints so a dark-mode visitor sees no white flash.
+     PREFERS=false means the site opens light unless the visitor chose otherwise. -->
+<script>(function(d){d.classList.add('js');var PREFERS=false,t=null;
+try{t=localStorage.getItem('utrc-theme')}catch(e){}
+if(t!=='dark'&&t!=='light')t=PREFERS&&matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+d.dataset.theme=t;})(document.documentElement);</script>
+
+
+<style>
+/* ---- route-art drafts --------------------------------------------------
+   Everything the new maps need, kept in the draft page so style.css and
+   join.html stay untouched while this is being tried out. */
+.grid--routes{display:grid;gap:var(--gap);grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:900px){.grid--routes{grid-template-columns:minmax(0,1fr)}}
+/* the stats row is the widest thing in the card, so let it wrap on a phone */
+@media (max-width:420px){.route--art .route__stats{gap:1rem;flex-wrap:wrap}}
+
+.route--art .route__map{background:var(--surface-2);display:block;width:100%;height:auto}
+.rm-paper{fill:var(--surface-2)}
+
+/* The city, in three weights. */
+.rm-minor path{fill:none;stroke:var(--line);stroke-width:.5}
+.rm-mid   path{fill:none;stroke:var(--line);stroke-width:1}
+.rm-major path{fill:none;stroke:var(--line-strong);stroke-width:1.4;opacity:.55}
+
+.rm-name text{
+  font-family:var(--f-mono);font-size:6px;letter-spacing:.14em;
+  fill:var(--fg-mute);opacity:.72;
+}
+.rm-furniture path{fill:var(--fg-mute);stroke:var(--fg-mute);stroke-width:.8;opacity:.5}
+.rm-furniture text{
+  font-family:var(--f-mono);font-size:6px;letter-spacing:.14em;
+  fill:var(--fg-mute);opacity:.6;stroke:none;
+}
+/* The letter this run draws, called out quietly in the corner. */
+.rm-glyph{
+  font-family:var(--f-display);font-size:26px;
+  fill:var(--fg);opacity:.14;letter-spacing:.02em;
+}
+
+/* The run itself. */
+.route--art .route__map .line{
+  fill:none;stroke:var(--red);stroke-width:3.4;
+  stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:var(--len,1400);stroke-dashoffset:var(--len,1400);
+}
+.route--blue .route__map .line{stroke:var(--blue)}
+.route--art .route__map.is-in .line{animation:draw 2.8s var(--ease) forwards}
+.route--art .route__map .dot{fill:var(--fg);stroke:var(--surface-2);stroke-width:2}
+.route--art .route__map .dot-r{fill:var(--red);stroke:var(--surface-2);stroke-width:2}
+.route--blue .route__map .dot-r{fill:var(--blue)}
+.route--art .route__map .lbl{
+  font-family:var(--f-mono);font-size:7.5px;letter-spacing:.16em;
+  fill:var(--fg);text-transform:uppercase;font-weight:700;
+}
+@media (prefers-reduced-motion:reduce){
+  .route--art .route__map .line{stroke-dashoffset:0}
+}
+
+/* Which draft you are looking at. */
+.draftbar{
+  position:sticky;top:var(--nav-h);z-index:40;
+  background:var(--ink);color:var(--paper);
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:.6rem clamp(16px,4vw,40px);
+  display:flex;gap:1.2rem;align-items:center;justify-content:space-between;flex-wrap:wrap;
+}
+.draftbar a{color:var(--red-lift);text-underline-offset:3px}
+
+.routes__credit{
+  margin:1.4rem 0 0;font-family:var(--f-mono);font-size:.62rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--fg-mute);
+}
+.routes__credit a{color:inherit;text-underline-offset:3px}
+</style>
+</head>
+<body>
+<!-- Draft marker. This page is scratch work: the leading underscore keeps it
+     out of the build, and nothing here is linked from the live site. -->
+
+<header id="nav"></header>
+<div class="draftbar">
+  <span>Route art draft &mdash; B · schematic grid</span>
+  <span><a href="_join-routes-osm.html">Compare: A · real streets &rarr;</a> &nbsp;·&nbsp; <a href="join.html">Current join page</a></span>
+</div>
+
+<section class="phead on-dark">
+  <div class="phead__bg"></div>
+  <div class="phead__in">
+    <p class="eyebrow">First time?</p>
+    <h1 class="display h-xl">Just<br>turn up.</h1>
+    <p class="lede">
+      There is no sign-up form, and no minimum pace. Just read this and show up to
+      any of our runs!
+    </p>
+    <div class="btn-row" style="margin-top:2rem">
+      <a class="btn" href="#faq" data-magnetic>Read the FAQ <span class="arrow">&rarr;</span></a>
+      <a class="btn btn--ghost" data-wa="icon" href="#" target="_blank" rel="noopener">WhatsApp updates</a>
+      <a class="btn btn--ghost" data-ig href="#" target="_blank" rel="noopener">Ask us anything</a>
+    </div>
+  </div>
+</section>
+
+<!-- Parked: moving banner, hidden. Unwrap the <template> to restore. -->
+<template data-parked="marquee">
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span>No sign-up</span><span>No fee</span><span>No minimum pace</span>
+    <span>Sweeper at the back</span><span>Everyone finishes</span>
+  </div>
+</div>
+</template>
+
+<!-- =============================================== NEXT + STEPS ======== -->
+<section class="sec">
+  <div class="shell">
+    <div id="next-run" class="next" data-reveal></div>
+
+    <div class="sec__head" style="margin-top:clamp(46px,5vw,80px)">
+      <div>
+        <p class="eyebrow">How a run works</p>
+        <h2 class="display h-xl" data-reveal>Four steps.<br>That&rsquo;s it.</h2>
+      </div>
+    </div>
+
+    <div class="grid grid--4">
+      <article class="card" data-reveal>
+        <span class="card__n">01</span>
+        <h3>Show up early</h3>
+        <p>Get to the meeting point about five minutes before. Look for the UTRC shirts and
+           the very obvious crowd of a hundred-odd people. Say hi — someone will find you.</p>
+      </article>
+      <article class="card" data-reveal style="--d:80ms">
+        <span class="card__n">02</span>
+        <h3>Run your pace</h3>
+        <p>Run at whatever pace feels comfortable, not the one that sounds impressive.
+           There is a sweeper at the back, so going steady never means going alone.</p>
+      </article>
+      <article class="card" data-reveal style="--d:160ms">
+        <span class="card__n">03</span>
+        <h3>Follow the leader</h3>
+        <p>We&rsquo;ll usually split everyone into groups at the start. Feel free to join
+           whichever one you want! There is a leader at the front and a sweeper at the back
+           to support you in case you fall behind.</p>
+      </article>
+      <article class="card" data-reveal style="--d:240ms">
+        <span class="card__n">04</span>
+        <h3>Stay for the food</h3>
+        <p>On Saturdays, we regroup at the finish and usually end up somewhere with
+           coffee or food. Feel free to stick around and get to know some of the
+           other runners!</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================== KIT LIST ========= -->
+<section class="sec sec--paper sec--tight" id="bring">
+  <div class="shell">
+    <div class="split">
+      <div>
+        <p class="eyebrow">Kit list</p>
+        <h2 class="display h-lg" data-reveal>What to<br>bring</h2>
+      </div>
+      <div class="grid grid--2">
+        <article class="card" data-reveal>
+          <h3>Essential</h3>
+          <ul>
+            <li>Running shoes you&rsquo;ve worn before</li>
+            <li>Water — bring more than you think in September</li>
+            <li>Layers you can tie round your waist</li>
+            <li>Your phone, for the group photo</li>
+          </ul>
+        </article>
+        <article class="card" data-reveal style="--d:100ms">
+          <h3>Nice to have</h3>
+          <ul>
+            <li>Open-ear headphones, so you can still hear traffic and the group</li>
+            <li>A light or reflective layer for the 7&nbsp;PM runs once it gets dark</li>
+            <li>Transit fare, in case the café is further than you planned</li>
+            <li>A small bag — we can usually keep it together at the meeting point</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ DRESSING FOR IT ======== -->
+<!-- VERIFY: the bands below are written for a Toronto winter and are general
+     running advice, not club policy. The only club claim is the cancellation
+     line in the coldest card, which matches the FAQ answer further down. -->
+<section class="sec sec--paper sec--tight" id="wear">
+  <div class="shell">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow">Dressing for it</p>
+        <h2 class="display h-lg" data-reveal>What to wear,<br>by temperature</h2>
+      </div>
+      <p class="lede" data-reveal style="--d:120ms;max-width:34ch">
+        Dress for about ten degrees warmer than the thermometer says. You will be cold
+        for the first kilometre and glad of it for the other four.
+      </p>
+    </div>
+
+    <div class="grid grid--5">
+      <article class="card" data-reveal>
+        <span class="card__n">Above 10&deg;C</span>
+        <h3>Mild</h3>
+        <p>Most of September, and again from May.</p>
+        <ul>
+          <li>Short-sleeve shirt or singlet</li>
+          <li>Shorts</li>
+          <li>Cap, sunscreen and sunglasses for sunny runs</li>
+        </ul>
+      </article>
+
+      <article class="card" data-reveal style="--d:80ms">
+        <span class="card__n">4&deg;C to 10&deg;C</span>
+        <h3>Cool</h3>
+        <p>Late autumn and early spring. The easiest running weather there is.</p>
+        <ul>
+          <li>Long-sleeve shirt</li>
+          <li>Cropped or full-length pants</li>
+          <li>A light sweatshirt over the top, if you want one</li>
+          <li>Reflective/bright clothing for the 7&nbsp;PM runs once it gets dark early</li>
+        </ul>
+      </article>
+
+      <article class="card" data-reveal style="--d:160ms">
+        <span class="card__n">&minus;1&deg;C to 4&deg;C</span>
+        <h3>Chilly</h3>
+        <p>Late November, and again in March. Hands and ears feel it first.</p>
+        <ul>
+          <li>Long-sleeve shirt</li>
+          <li>Pants or tights</li>
+          <li>Sweatshirt or fleece over the top</li>
+          <li>Light gloves and ear warmers</li>
+        </ul>
+      </article>
+
+      <article class="card" data-reveal style="--d:240ms">
+        <span class="card__n">&minus;6&deg;C to &minus;1&deg;C</span>
+        <h3>Cold</h3>
+        <p>A normal Toronto winter. Layers matter more than thickness.</p>
+        <ul>
+          <li>Long-sleeve shirt, tights underneath if you want them</li>
+          <li>Fleece and pants over that</li>
+          <li>Lightweight jacket on top</li>
+          <li>Hat and heavier gloves</li>
+        </ul>
+      </article>
+
+      <article class="card" data-reveal style="--d:320ms">
+        <span class="card__n">Below &minus;6&deg;C</span>
+        <h3>Deep cold</h3>
+        <p>Windchill does the damage, not the number. Cover everything.</p>
+        <ul>
+          <li>Long-sleeve shirt and tights</li>
+          <li>Fleece and pants over that</li>
+          <li>Lightweight jacket on top</li>
+          <li>Hat, neck gaiter, and two pairs of gloves</li>
+        </ul>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ==================================================== ROUTES ========= -->
+<section class="sec" id="routes">
+  <div class="shell">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow">The routes</p>
+        <h2 class="display h-xl" data-reveal>Where<br>we go</h2>
+      </div>
+      <p class="lede" data-reveal style="--d:120ms;max-width:40ch">
+        Four runs, four letters. Every one starts on King&rsquo;s College Circle, and run
+        them all and you have spelled UTRC across the city. Real streets, measured
+        distances &mdash; your run leader still calls the exact turns on the day.
+      </p>
+    </div>
+
+    <div class="grid grid--routes">
+
+      <article class="route route--art route--red" data-reveal>
+        <svg class="route__map" viewBox="0 0 400 300" role="img" aria-label="Map of downtown Toronto with the Monday 5K route drawn on it, tracing the letter U from King’s College Circle south to Front Street, east, then north up Jarvis.">
+          <rect class="rm-paper" width="400" height="300"/>
+          
+          <g class="rm-mid"><path d="M3 268.4L234.1 257.2M109.5 -12.2L111.7 69.2M93.5 -10.2L92.1 169.3M353.3 135.8L232.9 135M-12.9 119.6L232.9 135M111.7 69.2L113.6 186.1M-10.5 213.7L233.7 211.2M231.7 69.8L410.7 70.4M123.2 168.9L123.6 262M206.5 -10.1L213.1 311.1M-13.9 185.2L210.4 185.6M-18.5 66L231.7 69.8M157.8 261.9L158.2 114.6M-13.5 1L109.3 -0.8M233.9 227.5L335.3 226.6M371.4 -14.2L371.5 73.3M289.2 -10.1L290.3 241.3M3.5 -13.8L3.1 290.4M-20 227.2L233.9 227.5M265 -10.2L267.1 269.1M234.1 257.2L324.2 238.1M234 244.6L-12.9 243.8M233.6 194.9L-14.6 194.4M323.4 -10.1L324.2 238.1M244.6 185.5L371.6 184.9M134.8 69.4L136.1 186.1"/></g>
+          <g class="rm-major"><path d="M164.2 69.3L161 -10.6M162 69.3L180.7 261.9M325.4 290.9L171 312.7M73.6 -17.3L73 309.3M234.9 310.7L231.2 -10.1"/></g>
+          <g class="rm-name"><text x="171.3" y="165.6" transform="rotate(84.4 171.3 165.6)">UNIVERSITY AVE</text><text x="73.3" y="146" transform="rotate(-89.9 73.3 146)">SPADINA AVE</text><text x="92.8" y="79.5" transform="rotate(-89.6 92.8 79.5)">HURON ST</text><text x="107" y="227.4" transform="rotate(0.1 107 227.4)">KING ST W</text><text x="266" y="129.4" transform="rotate(89.6 266 129.4)">CHURCH ST</text><text x="308.1" y="185.2" transform="rotate(-0.3 308.1 185.2)">QUEEN ST E</text></g>
+          <path class="line" d="M121.2 38L123.9 41.7L123.6 42.7L125.5 43.9L126.6 45.6L125.7 47.6L123.9 48.6L123.9 49.1L124.5 49.3L109.6 50L109.8 62.9L110.9 67.9L112.7 70.7L113 77.2L113.6 186.1L123.2 186.1L123.6 262L182.7 262L183.7 261.6L222.4 261.2L227.6 259.9L231.8 257.5L234.1 257.2L265.5 246.9L290.3 241.3L289.6 185.1L290.4 100L290 73.3" style="--len:592"/>
+          <circle class="dot" cx="121.2" cy="38" r="5"/>
+          <circle class="dot-r" cx="290" cy="73.3" r="5"/>
+          <text class="lbl" text-anchor="start" x="131.2" y="55">Start</text>
+          <text class="lbl" text-anchor="end" x="280" y="90.3">Finish</text>
+          <g class="rm-furniture">
+            <path d="M320.4 280v4M320.4 282h55.6M376 280v4"/>
+            <text x="348.2" y="276" text-anchor="middle">500 m</text>
+            <g transform="translate(24 274) rotate(16.3)">
+              <path d="M0 10V-6M0 -9l3.4 5H-3.4Z"/>
+              <text x="0" y="20" text-anchor="middle">N</text>
+            </g>
+          </g>
+          <text class="rm-glyph" x="384" y="26" text-anchor="end">U</text>
+        </svg>
+        <div class="route__body">
+          <h3>Monday 5K</h3>
+          <p>South through Chinatown and down to Front Street, east past Union and the market, then north up Jarvis. The widest of the four letters, and the flattest run.</p>
+          <div class="route__stats">
+            <span><b>5.3 km</b>Distance</span>
+            <span><b>~35 min</b>Steady group</span>
+            <span><b>Flat</b>Terrain</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="route route--art route--red" data-reveal style="--d:90ms">
+        <svg class="route__map" viewBox="0 0 400 300" role="img" aria-label="Map of downtown Toronto with the Wednesday 5K route drawn on it, tracing the letter T: a stem down to Dundas and back, and a crossbar along Bloor from Bathurst to Bay.">
+          <rect class="rm-paper" width="400" height="300"/>
+          
+          <g class="rm-mid"><path d="M73 -10.1L72.6 311.3M326.1 -11.7L328.1 311.1M205.8 -17.7L208.8 182.4M186.7 -36.5L184.1 308.4M358.7 -3.5L403.1 315.1M361.3 265.2L420.3 274.5M-13.5 245.2L361.3 265.2M208.8 182.4L211.2 310.3M359.8 183.2L410.9 187.5M-12.9 177.8L359.8 183.2M265.2 313.5L267.3 239.6M-11 96L205.8 94.3M272.3 -12.9L272.6 38.9M237.9 182.7L239.5 322.4"/></g>
+          <g class="rm-major"><path d="M-12.1 38.7L358.8 39.3M274.9 182.5L272.6 38.9M272.1 182.5L273.8 327.9M159.1 38.7L160.3 317.6M358.8 39.3L410.5 38.7M361.9 310.1L358.7 -11"/></g>
+          <g class="rm-name"><text x="273.8" y="110.7" transform="rotate(89.1 273.8 110.7)">QUEEN'S PARK</text><text x="272.9" y="255.2" transform="rotate(89.3 272.9 255.2)">UNIVERSITY AVE</text><text x="159.7" y="178.1" transform="rotate(89.8 159.7 178.1)">SPADINA AVE</text><text x="72.8" y="150.6" transform="rotate(-89.9 72.8 150.6)">BATHURST ST</text><text x="327.1" y="149.7" transform="rotate(89.6 327.1 149.7)">BAY ST</text><text x="173.9" y="255.2" transform="rotate(3.1 173.9 255.2)">DUNDAS ST W</text></g>
+          <path class="line" d="M220.7 143.2L224.1 147.8L223.8 149.1L226.2 150.5L227.6 152.7L226.4 155.2L224.2 156.5L224.1 157.2L225 157.4L206.2 158.3L206.5 174.4L207.8 180.8L210 184.4L210.5 192.5L210.8 262L210.5 192.5L210 184.4L207.8 180.8L206.5 174.4L206 153.1L206 38.5L163.2 38.8L133.5 38.1L72.6 38.2L279 38.9L327.4 38.4" style="--len:757"/>
+          <circle class="dot" cx="220.7" cy="143.2" r="5"/>
+          <circle class="dot-r" cx="327.4" cy="38.4" r="5"/>
+          <text class="lbl" text-anchor="start" x="230.7" y="160.2">Start</text>
+          <text class="lbl" text-anchor="end" x="317.4" y="55.4">Finish</text>
+          <g class="rm-furniture">
+            <path d="M306.1 280v4M306.1 282h69.9M376 280v4"/>
+            <text x="341.1" y="276" text-anchor="middle">500 m</text>
+            <g transform="translate(24 274) rotate(16.3)">
+              <path d="M0 10V-6M0 -9l3.4 5H-3.4Z"/>
+              <text x="0" y="20" text-anchor="middle">N</text>
+            </g>
+          </g>
+          <text class="rm-glyph" x="384" y="26" text-anchor="end">T</text>
+        </svg>
+        <div class="route__body">
+          <h3>Wednesday 5K</h3>
+          <p>Down to Dundas and straight back up — the stem is an out-and-back — then the whole length of Bloor, Bathurst to Bay. The simplest route we run.</p>
+          <div class="route__stats">
+            <span><b>5.4 km</b>Distance</span>
+            <span><b>~35 min</b>Steady group</span>
+            <span><b>Flat</b>Terrain</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="route route--art route--blue" data-reveal style="--d:180ms">
+        <svg class="route__map" viewBox="0 0 400 300" role="img" aria-label="Map of downtown Toronto with the Saturday 8K route drawn on it, tracing the letter R from King’s College Circle, with a spine down to Front Street, a bowl through Queen and College, and a diagonal leg.">
+          <rect class="rm-paper" width="400" height="300"/>
+          
+          <g class="rm-mid"><path d="M31.1 268.4L262.2 257.2M137.6 -12.2L139.9 69.2M121.6 -10.2L120.2 169.3M381.5 135.8L261 135M-13.2 119.4L261 135M139.9 69.2L141.7 186.1M-10.2 210.5L261.8 211.2M259.8 69.8L412.4 70.6M151.3 168.9L151.8 262M234.6 -10.1L241.2 311.1M-11.1 184.9L238.5 185.6M-14 65.8L259.8 69.8M185.9 261.9L186.3 114.6M-10.9 0.8L137.5 -0.8M262 227.5L363.5 226.6M399.6 -14.2L399.6 73.3M317.3 -10.1L318.4 241.3M31.6 -13.8L31.2 290.4M-14.5 227L262 227.5M293.1 -10.2L295.2 269.1M262.2 257.2L352.3 238.1M262.2 244.6L-15.6 243.5M261.7 194.9L-11.7 194.2M351.5 -10.1L352.3 238.1M272.8 185.5L399.7 184.9M162.9 69.4L164.2 186.1"/></g>
+          <g class="rm-major"><path d="M192.4 69.3L189.1 -10.6M190.1 69.3L208.8 261.9M353.6 290.9L199.1 312.7M101.8 -17.3L101.1 309.3M263 310.7L259.3 -10.1"/></g>
+          <g class="rm-name"><text x="199.4" y="165.6" transform="rotate(84.4 199.4 165.6)">UNIVERSITY AVE</text><text x="101.4" y="146" transform="rotate(-89.9 101.4 146)">SPADINA AVE</text><text x="120.9" y="79.5" transform="rotate(-89.6 120.9 79.5)">HURON ST</text><text x="321.2" y="135.4" transform="rotate(0.4 321.2 135.4)">DUNDAS ST E</text><text x="125.8" y="210.9" transform="rotate(0.2 125.8 210.9)">ADELAIDE ST W</text><text x="336.1" y="70.2" transform="rotate(0.3 336.1 70.2)">CARLTON ST</text><text x="312.7" y="227" transform="rotate(-0.5 312.7 227)">KING ST E</text></g>
+          <path class="line" d="M149.3 38L152 41.7L151.7 42.7L153.7 43.9L154.7 45.6L153.8 47.6L152.1 48.6L152 49.1L152.7 49.3L137.8 50L138 62.9L139 67.9L140.8 70.7L141.2 77.2L141.7 186.1L151.3 186.1L151.8 262L151.3 186.1L141.7 186.1L238.5 185.6L235.1 182.7L234.5 180.4L234.8 130.6L234.2 69.6L227.9 69.1L149.4 69.5L139.9 69.2L140.8 70.7L141.2 80.5L141.7 186.1L151.3 186.1L151.4 204.2L166.5 204.1L166.6 228.2L197.5 228L200.5 253.6L202.7 256.9L206.9 259.6L208.8 261.9L250.5 261.2L255.7 259.9L260 257.5L262.2 257.2" style="--len:955"/>
+          <circle class="dot" cx="149.3" cy="38" r="5"/>
+          <circle class="dot-r" cx="262.2" cy="257.2" r="5"/>
+          <text class="lbl" text-anchor="start" x="159.3" y="55">Start</text>
+          <text class="lbl" text-anchor="end" x="252.2" y="246.2">Finish</text>
+          <g class="rm-furniture">
+            <path d="M320.4 280v4M320.4 282h55.6M376 280v4"/>
+            <text x="348.2" y="276" text-anchor="middle">500 m</text>
+            <g transform="translate(24 274) rotate(16.3)">
+              <path d="M0 10V-6M0 -9l3.4 5H-3.4Z"/>
+              <text x="0" y="20" text-anchor="middle">N</text>
+            </g>
+          </g>
+          <text class="rm-glyph" x="384" y="26" text-anchor="end">R</text>
+        </svg>
+        <div class="route__body">
+          <h3>Saturday 8K</h3>
+          <p>The long one, and the only letter with a leg. Down to Front and back, round the bowl through Queen, Bay and College, then the diagonal out to the water.</p>
+          <div class="route__stats">
+            <span><b>8.6 km</b>Distance</span>
+            <span><b>~50 min</b>Steady group</span>
+            <span><b>Rolling</b>Terrain</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="route route--art route--blue" data-reveal style="--d:270ms">
+        <svg class="route__map" viewBox="0 0 400 300" role="img" aria-label="Map of downtown Toronto with the Saturday 5K café route drawn on it, tracing the letter C west along Harbord, south down Bathurst and east along Front Street.">
+          <rect class="rm-paper" width="400" height="300"/>
+          
+          <g class="rm-mid"><path d="M149.5 262L343.1 252.6M238.6 -13.2L240.6 95.1M225.6 -13.8L224.1 178.9M36.8 37L238.6 36.5M343 242L77.3 240.6M368.6 -10.7L370.7 262.5M342.1 150.2L410.7 149.6M-7.4 121.7L342.1 150.2M240.6 95.1L242.1 193.1M53.9 212.8L342.8 214.1M341.1 95.6L417.7 98.5M250.1 178.6L250.5 256.6M319.3 -10.8L327.1 309.2M-11.8 190.4L323.2 192.6M7.3 81.7L341.1 95.6M279.1 256.5L279.5 133.2M342.9 227.7L417.6 227.1M345.1 306.2L340.3 -11.6M36.9 -11.2L34.1 191.4M389.2 16.9L390.2 239.3M150 -13.3L149.5 280.4M-2.7 225.8L342.9 227.7M343.1 252.6L411.8 236.8M342.6 200.4L78.1 202.6M351.9 192.5L415.2 192.2M259.9 95.3L261 193.1"/></g>
+          <g class="rm-major"><path d="M33.7 0.1L340.4 -0.2M340.4 -0.2L410.8 -0.4M284.6 95.2L283 -0.4M282.6 95.2L298.3 256.5M418.6 280.8L250.5 300.2M207.5 -0.6L208.1 296.2"/></g>
+          <g class="rm-name"><text x="290.5" y="175.8" transform="rotate(84.4 290.5 175.8)">UNIVERSITY AVE</text><text x="207.8" y="147.8" transform="rotate(89.9 207.8 147.8)">SPADINA AVE</text><text x="198.3" y="213.5" transform="rotate(0.3 198.3 213.5)">ADELAIDE ST W</text><text x="174.2" y="88.6" transform="rotate(2.4 174.2 88.6)">COLLEGE ST</text></g>
+          <path class="line" d="M248.5 69L247.6 70.4L245.9 70.7L238.8 70.7L238.8 58L225.3 58L225.4 38.8L149.9 38L149.5 262L211.1 257.6L231.2 256.6L250.5 256.6" style="--len:457"/>
+          <circle class="dot" cx="248.5" cy="69" r="5"/>
+          <circle class="dot-r" cx="250.5" cy="256.6" r="5"/>
+          <text class="lbl" text-anchor="end" x="238.5" y="86">Start</text>
+          <text class="lbl" text-anchor="end" x="240.5" y="245.6">Café</text>
+          <g class="rm-furniture">
+            <path d="M329.5 280v4M329.5 282h46.5M376 280v4"/>
+            <text x="352.8" y="276" text-anchor="middle">500 m</text>
+            <g transform="translate(24 274) rotate(16.3)">
+              <path d="M0 10V-6M0 -9l3.4 5H-3.4Z"/>
+              <text x="0" y="20" text-anchor="middle">N</text>
+            </g>
+          </g>
+          <text class="rm-glyph" x="384" y="26" text-anchor="end">C</text>
+        </svg>
+        <div class="route__body">
+          <h3>Saturday 5K</h3>
+          <p>West along Harbord, down the full length of Bathurst, then east to whichever partner café is looking after us. The open side of the C faces campus.</p>
+          <div class="route__stats">
+            <span><b>4.9 km</b>Distance</span>
+            <span><b>~35 min</b>Steady group</span>
+            <span><b>Coffee</b>Included</span>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- Required by the ODbL: the street geometry under every one of these
+         maps is OpenStreetMap data. This has to stay if the maps ship. -->
+    <p class="routes__credit">
+      Street data &copy; <a href="https://www.openstreetmap.org/copyright"
+      target="_blank" rel="noopener">OpenStreetMap</a> contributors.
+      Routes drawn along real pavement; distances measured along the route.
+    </p>
+  </div>
+</section>
+
+<!-- ================================================== WHAT TO BRING ==== -->
+
+<!-- ======================================================= FAQ ========= -->
+<!-- VERIFY: these answers are drafted from the partnership package and the
+     club's Instagram. Confirm the fee, eligibility and cancellation lines. -->
+<section class="sec sec--paper" id="faq">
+  <div class="shell">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow">Everything else</p>
+        <h2 class="display h-xl" data-reveal>Questions<br>everyone asks</h2>
+      </div>
+    </div>
+
+    <div class="acc">
+      <div class="acc__item">
+        <button class="acc__btn">Do I need to sign up or register? <span class="acc__ico" aria-hidden="true"></span></button>
+        <div class="acc__panel"><div>
+          <p>No. UTRC is a drop-in club — turn up at the meeting point on any run day and you&rsquo;re in.
+             There&rsquo;s no form, no waiting list and no commitment to come back.</p>
+        </div></div>
+      </div>
+      <div class="acc__item">
+        <button class="acc__btn">How fast do I have to be? <span class="acc__ico" aria-hidden="true"></span></button>
+        <div class="acc__panel"><div>
+          <p>As fast as you are. Everyone sets off together and runs their own pace, and a
+             sweeper stays at the back and never passes anybody. If you need to walk, the sweeper
+             walks with you. That is what &ldquo;no one left behind&rdquo; actually means in practice.</p>
+        </div></div>
+      </div>
+      <div class="acc__item">
+        <button class="acc__btn">I&rsquo;ve never run 5K before. Is this for me? <span class="acc__ico" aria-hidden="true"></span></button>
+        <div class="acc__panel"><div>
+          <p>Yes — that&rsquo;s the group we&rsquo;re proudest of. Join the social group, take walk breaks
+             whenever you want, and treat the distance as a target rather than a requirement.
+             A lot of our regulars ran their first ever 5K on a Wednesday with us.</p>
+        </div></div>
+      </div>
+      <div class="acc__item">
+        <button class="acc__btn">Is it free? <span class="acc__ico" aria-hidden="true"></span></button>
+        <div class="acc__panel"><div>
+          <p>Drop-in runs are free. Some special events — race entries, socials, kit — have a cost,
+             and we always say so up front on Instagram.</p>
+        </div></div>
+      </div>
+      <div class="acc__item">
+        <button class="acc__btn">Do I have to be a UofT student? <span class="acc__ico" aria-hidden="true"></span></button>
+        <div class="acc__panel"><div>
+          <p>We&rsquo;re a University of Toronto student club, and our runs are built around the UofT
+             community — students across every faculty, plus staff and alumni. If you&rsquo;re outside
+             that and want to run with us, message us on Instagram first and we&rsquo;ll sort it out.</p>
+        </div></div>
+      </div>
+      <div class="acc__item">
+        <button class="acc__btn">What happens if it rains? <span class="acc__ico" aria-hidden="true"></span></button>
+        <div class="acc__panel"><div>
+          <p>We run. The only things that stop us are genuinely unsafe conditions — ice storms,
+             lightning, extreme cold warnings — and if a run is cancelled we post it on Instagram
+             stories a few hours beforehand. Check there before you leave.</p>
+        </div></div>
+      </div>
+      <div class="acc__item">
+        <button class="acc__btn">Can I wear headphones? <span class="acc__ico" aria-hidden="true"></span></button>
+        <div class="acc__panel"><div>
+          <p>We&rsquo;d rather you didn&rsquo;t wear anything that seals your ears — you need to hear traffic,
+             your leader and the person next to you. Open-ear headphones are a good compromise, and
+             most people find they don&rsquo;t want music once they&rsquo;re running in a pack that size.</p>
+        </div></div>
+      </div>
+      <div class="acc__item">
+        <button class="acc__btn">Can I come alone? <span class="acc__ico" aria-hidden="true"></span></button>
+        <div class="acc__panel"><div>
+          <p>Almost everybody&rsquo;s first run is on their own. Find any exec or run leader at the start,
+             tell them it&rsquo;s your first time, and they&rsquo;ll put you with people running your pace.
+             You will not be standing on your own for long.</p>
+        </div></div>
+      </div>
+      <div class="acc__item">
+        <button class="acc__btn">Is there anything after the run? <span class="acc__ico" aria-hidden="true"></span></button>
+        <div class="acc__panel"><div>
+          <p>Usually. Saturdays finish at a partner café with a discount for runners, and
+             weekday runs often spill into food somewhere nearby. Stick around — it&rsquo;s where
+             the club actually happens.</p>
+        </div></div>
+      </div>
+      <div class="acc__item">
+        <button class="acc__btn">How do I become a run leader? <span class="acc__ico" aria-hidden="true"></span></button>
+        <div class="acc__panel"><div>
+          <p>Come to runs consistently, get to know the group, then talk to our VP Internal —
+             applications open at the start of each term. We currently have twelve leaders and
+             we&rsquo;re always short on sweepers for the social group.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <img class="cta__mark" src="assets/img/utrc-logo-white.png" alt="" aria-hidden="true">
+  <div class="shell">
+    <p class="eyebrow">That&rsquo;s the whole guide</p>
+    <h2 class="display h-xl" data-reveal>Nothing left<br>to plan.</h2>
+    <p class="lede" data-reveal style="margin-top:1.4rem">
+      Put the next run in your calendar and we&rsquo;ll see you at the start.
+    </p>
+    <div class="btn-row" style="margin-top:2.2rem" data-reveal>
+      <a class="btn" href="index.html#schedule" data-magnetic>See the schedule <span class="arrow">&rarr;</span></a>
+      <a class="btn btn--ghost" href="runs.html">What it looks like</a>
+    </div>
+  </div>
+</section>
+
+<footer id="foot"></footer>
+
+<script src="assets/js/main.js"></script>
+<!-- Parked: the club does not run formal pace groups, so this section was
+     removed from the page. Kept for its layout only - the pace bands and
+     group letters below are NOT accurate. -->
+<template data-parked="pace-groups">
+<!-- ================================================ PACE GROUPS ======== -->
+<!-- VERIFY: pace bands below are a sensible default — set them to the ones
+     your run leaders actually call out. -->
+<section class="sec sec--paper" id="paces">
+  <div class="shell">
+    <div class="sec__head">
+      <div>
+        <p class="eyebrow">Find your group</p>
+        <h2 class="display h-xl" data-reveal>Every pace<br>is a pace.</h2>
+      </div>
+      <p class="lede" data-reveal style="--d:120ms;max-width:34ch">
+        Not sure? Start one group slower than you think. It is far easier to move up
+        halfway through than to blow up in the first kilometre.
+      </p>
+    </div>
+
+    <div class="sched">
+      <div class="run" data-reveal>
+        <div class="run__day">Social</div>
+        <div class="run__body">
+          <div class="run__where">Run-walk friendly</div>
+          <div class="run__meta">Conversation the whole way. Walk breaks whenever you want one.</div>
+        </div>
+        <div class="run__time">7:00+ /km</div>
+        <div class="run__dist">Group D</div>
+      </div>
+      <div class="run" data-reveal style="--d:70ms">
+        <div class="run__day">Steady</div>
+        <div class="run__body">
+          <div class="run__where">The biggest group by far</div>
+          <div class="run__meta">Comfortable effort, full sentences, no one dropped.</div>
+        </div>
+        <div class="run__time">6:00 &ndash; 6:45 /km</div>
+        <div class="run__dist">Group C</div>
+      </div>
+      <div class="run" data-reveal style="--d:140ms">
+        <div class="run__day">Tempo</div>
+        <div class="run__body">
+          <div class="run__where">Working, but talking</div>
+          <div class="run__meta">For runners with a race in the calendar.</div>
+        </div>
+        <div class="run__time">5:15 &ndash; 5:45 /km</div>
+        <div class="run__dist">Group B</div>
+      </div>
+      <div class="run" data-reveal style="--d:210ms">
+        <div class="run__day">Front</div>
+        <div class="run__body">
+          <div class="run__where">Off the front</div>
+          <div class="run__meta">Sub-5s. You&rsquo;ll be waiting at the finish — please cheer.</div>
+        </div>
+        <div class="run__time">Sub 5:00 /km</div>
+        <div class="run__dist">Group A</div>
+      </div>
+    </div>
+  </div>
+</section>
+</template>
+
+</body>
+</html>

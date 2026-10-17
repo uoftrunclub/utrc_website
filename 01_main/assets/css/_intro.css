@@ -1,0 +1,333 @@
+/* ==========================================================================
+   UTRC — session intro overlay.  STANDALONE.
+
+   Nothing else in the site knows this file exists. It is namespaced under
+   `uintro` and scoped to a single state attribute on <html>, so it can sit
+   beside style.css without touching it.
+
+   To put it on a page, two tags in <head> — nothing in the <body>:
+
+     <link rel="stylesheet" href="assets/css/_intro.css">
+     <script src="assets/js/_intro.js"></script>
+
+   The script must be plain (not defer/async) so the ink shield paints before
+   the page does. Everything else is in this file.
+
+   The whole timeline is driven by the custom properties in section 1. JS
+   reads them back rather than keeping its own copy of the numbers, so this
+   block is the only place timing lives.
+   ========================================================================== */
+
+/* --- 1. Tokens ----------------------------------------------------------- */
+:root{
+  /* colour ---------------------------------------------------------------
+     The logo PNG is drawn as-is, so it keeps its signature orange (#DC3220).
+     Everything else is pulled off the site's dark ground to match.        */
+  --uintro-bg:#0B0B0C;              /* the hero's dark, exactly */
+  --uintro-swoosh:#F7F5F0;          /* --paper */
+  --uintro-credit:#D6D3CD;          /* --fg-soft on ink */
+  --uintro-credit-mark:#F7F5F0;     /* the word "Nike" */
+  --uintro-glow:rgba(220,50,32,.30);   /* the red bloom, top-right */
+  --uintro-glow-2:rgba(40,78,145,.20); /* club blue, bottom-left — hero habit */
+  --uintro-skip:#7C7C85;
+
+  /* size ------------------------------------------------------------------
+     One knob. 1 is the original drawing; 2 is everything at double length
+     and height. Nothing below needs touching to resize the composition --
+     the mark's width carries the scale and the rest is proportional to it,
+     so the stack keeps its shape at any value.                            */
+  --uintro-scale:2;
+
+  /* The mark, and with it everything else. The min() is a height guard:
+     at 2x on a short laptop window the stack would otherwise run off the
+     bottom, and since every other size derives from this one, capping here
+     shrinks the whole composition evenly rather than cropping it. On a
+     normal desktop window the cap never bites and 2x is exactly 2x. */
+  --uintro-logo-w:min(calc(clamp(128px,18vw,224px) * var(--uintro-scale)), 52vh);
+
+  /* Ratios measured off the 1x drawing: 236/224, 38/224, 22/224. */
+  --uintro-swoosh-w:calc(var(--uintro-logo-w) * 1.054);
+  --uintro-stack:calc(var(--uintro-logo-w) * .170);    /* logo → swoosh gap */
+  --uintro-stack-2:calc(var(--uintro-logo-w) * .098);  /* swoosh → credit gap */
+
+  /* Two terms, smaller wins. The rem term governs normally, so a visitor who
+     has raised their browser's font size still gets it. The second only
+     takes over when the height guard above has shrunk the mark, which stops
+     the credit staying at full size against a mark that no longer is.
+     (.0629 = 14.08px at the 1x mark width of 224.) */
+  --uintro-credit-size:min(
+    calc(clamp(.72rem,1.15vw,.88rem) * var(--uintro-scale)),
+    calc(var(--uintro-logo-w) * .0629)
+  );
+
+  /* motion ---------------------------------------------------------------
+     t- = when it starts, d- = how long it runs. All measured from the moment
+     the overlay goes live. Change these to retime the whole thing.        */
+  --uintro-t-logo:0ms;        --uintro-d-logo:560ms;
+  --uintro-t-swoosh:620ms;    --uintro-d-swoosh:700ms;
+  --uintro-t-credit:1180ms;   --uintro-d-credit:560ms;
+  --uintro-hold:620ms;        /* beat after the credit lands */
+  --uintro-d-exit:780ms;      /* the wipe off */
+                              /* total ≈ 3.14s */
+
+  --uintro-ease:cubic-bezier(.22,1,.36,1);        /* the site's --ease */
+  --uintro-ease-wipe:cubic-bezier(.76,0,.24,1);   /* swoosh + exit */
+
+  /* How far the wipe edge leans, as a % of the element's own width. The two
+     differ because the lean is a percentage of width but is read against
+     height: the swoosh box is wide and tall, the credit is wide and 19px
+     short, so one number cannot serve both. At these values each edge sits
+     about 21° off vertical, which is square across the swoosh's long arm. */
+  --uintro-skew:14%;          /* the swoosh, and the exit */
+  --uintro-skew-text:4%;      /* the credit line */
+}
+
+/* --- 2. The boot shield --------------------------------------------------
+   The script sets data-utrc-intro="arming" from <head>, before <body> is
+   parsed. This paints the ink over everything at first paint, so the page
+   never flashes behind the overlay while the DOM is still coming in. It
+   stops matching the instant the state moves to "running".              */
+html[data-utrc-intro="arming"]::before{
+  content:"";
+  position:fixed;inset:0;
+  background:var(--uintro-bg);
+  z-index:2147482000;
+}
+
+/* Hold the page still underneath. Released when the overlay is removed. */
+html[data-utrc-intro]{overflow:hidden}
+html[data-utrc-intro] body{overflow:hidden}
+
+/* --- 3. The overlay ------------------------------------------------------ */
+.uintro{
+  position:fixed;inset:0;
+  z-index:2147483000;
+  background:var(--uintro-bg);
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  /* The exit wipe's start pose: fully covering, with the leading edge parked
+     off to the left so the angle is already correct when it begins to move. */
+  clip-path:polygon(-25% 0, 125% 0, 125% 100%, calc(-25% - var(--uintro-skew)) 100%);
+  will-change:clip-path;
+}
+
+/* The two corner blooms every dark section of the site carries. */
+.uintro::before,
+.uintro::after{
+  content:"";
+  position:absolute;
+  width:min(70vw,780px);
+  aspect-ratio:1;
+  border-radius:50%;
+  pointer-events:none;
+}
+.uintro::before{
+  top:-28%;right:-18%;
+  background:radial-gradient(circle,var(--uintro-glow),transparent 62%);
+}
+.uintro::after{
+  bottom:-30%;left:-20%;
+  background:radial-gradient(circle,var(--uintro-glow-2),transparent 62%);
+}
+
+/* --- 4. The stack -------------------------------------------------------- */
+.uintro__stage{
+  position:relative;
+  z-index:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-inline:24px;
+  /* Optical centring: the credit line underneath makes the group read low,
+     so the whole stack is lifted a little off true centre. */
+  transform:translateY(-2.5vh);
+}
+
+/* 4a. The mark. Drawn at its own colour — no filter, no tint. */
+.uintro__logo{
+  width:var(--uintro-logo-w);
+  height:auto;
+  opacity:0;
+  transform:scale(.9);
+  margin-bottom:var(--uintro-stack);
+}
+
+/* 4b. The swoosh. Revealed by an angled edge travelling left to right —
+       the shape is always solid, there is just more of it each frame.   */
+.uintro__swoosh{
+  width:var(--uintro-swoosh-w);
+  height:auto;
+  display:block;
+  margin-bottom:var(--uintro-stack-2);
+  --uintro-lean:var(--uintro-skew);
+  clip-path:polygon(calc(0% - var(--uintro-lean)) 0, -40% 0, -40% 100%, 0% 100%);
+  will-change:clip-path;
+}
+.uintro__swoosh path{fill:var(--uintro-swoosh)}
+
+/* 4c. The credit, uncovered by the same gesture at the same easing. */
+.uintro__credit{
+  margin:0;
+  font-family:'Space Mono',ui-monospace,'SF Mono',Consolas,monospace;
+  font-weight:700;
+  font-size:var(--uintro-credit-size);
+  letter-spacing:.3em;
+  margin-right:-.3em;            /* letter-spacing leaves a gap after the last
+                                    glyph; pulling the box in by the same
+                                    amount puts the words back on true centre */
+  text-transform:uppercase;
+  color:var(--uintro-credit);
+  white-space:nowrap;
+
+  /* Light text on a dark ground is where Windows ClearType looks worst: it
+     filters across the LCD subpixels, so every stem picks up an orange edge
+     on one side and a blue one on the other. At this size that reads as a
+     smudge rather than as colour.
+
+     -webkit-font-smoothing is a macOS-only property and does nothing about
+     it here. The one thing that does, on Windows, is putting the text on its
+     own compositing layer — a layer has no subpixel geometry to filter
+     against, so the browser falls back to plain greyscale antialiasing.
+     translateZ(0) is the cheapest way to ask for one. */
+  transform:translateZ(0);
+  -webkit-font-smoothing:antialiased;   /* for the macOS half of the audience */
+
+  --uintro-lean:var(--uintro-skew-text);
+  clip-path:polygon(calc(0% - var(--uintro-lean)) 0, -40% 0, -40% 100%, 0% 100%);
+  /* No will-change here on purpose. It buys nothing on a 560ms clip of a
+     one-line element, and promoting text to its own composited layer is a
+     known way to lose subpixel antialiasing on some GPUs. The swoosh is a
+     path, so it keeps the hint. */
+}
+.uintro__credit b{font-weight:700;color:var(--uintro-credit-mark)}
+
+/* --- 5. Skip ------------------------------------------------------------- */
+.uintro__skip{
+  position:absolute;
+  right:clamp(16px,3vw,34px);
+  bottom:clamp(16px,3vw,34px);
+  z-index:2;
+  padding:8px 4px;
+  font-family:'Space Mono',ui-monospace,'SF Mono',Consolas,monospace;
+  font-size:.6rem;
+  font-weight:700;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--uintro-skip);
+  opacity:0;
+  transition:color .25s var(--uintro-ease);
+}
+.uintro__skip:hover{color:var(--uintro-credit-mark)}
+.uintro__skip:focus-visible{outline:3px solid #FF3A24;outline-offset:3px;border-radius:2px}
+
+/* --- 6. The timeline ----------------------------------------------------
+   Nothing animates until JS adds .uintro--go, one frame after the overlay is
+   in the document. That frame is what guarantees the browser has the start
+   values before the animations are attached.
+
+   It is a class on the overlay and NOT the state attribute on <html>, which
+   matters more than it looks. Everything here rests in a hidden base state
+   -- the mark at opacity 0 and scale .9, the swoosh and credit fully clipped
+   -- and depends on its animation's `both` fill to hold the finished frame.
+   Driven off the "running" state, these selectors stop matching the instant
+   the state turns to "exiting": the animations are dropped, every element
+   falls back to hidden, and the composition pops out of existence instead of
+   leaving with the stack. A skip makes it worse, since it can flip the state
+   before the wipes have run at all. A class added once and never removed
+   keeps the finished frame through the exit.                            */
+.uintro--go .uintro__logo{
+  animation:uintro-mark var(--uintro-d-logo) var(--uintro-ease) var(--uintro-t-logo) both;
+}
+.uintro--go .uintro__swoosh{
+  animation:uintro-wipe var(--uintro-d-swoosh) var(--uintro-ease-wipe) var(--uintro-t-swoosh) both;
+}
+.uintro--go .uintro__credit{
+  animation:uintro-wipe var(--uintro-d-credit) var(--uintro-ease-wipe) var(--uintro-t-credit) both;
+}
+.uintro--go .uintro__skip{
+  animation:uintro-skip-in .4s var(--uintro-ease) 900ms both;
+}
+
+@keyframes uintro-mark{
+  from{opacity:0;transform:scale(.9)}
+  to  {opacity:1;transform:scale(1)}
+}
+
+/* One keyframe pair serves the swoosh and the credit.
+
+   The clipped region is everything BEHIND the leading edge, not a band around
+   it — its left side is pinned off at -40% and only the right side travels.
+   That is what makes the shape stay: once the edge has passed, that part of
+   the element is inside the region for good, and `both` holds the last frame.
+
+   The edge leans with its foot in front, so it crosses the swoosh's long arm
+   square-on and the low left tail is uncovered before the high right tip.
+   --uintro-lean is set per element, since the two want different angles. */
+@keyframes uintro-wipe{
+  from{clip-path:polygon(calc(0%   - var(--uintro-lean)) 0, -40% 0, -40% 100%, 0%   100%)}
+  to  {clip-path:polygon(110% 0, -40% 0, -40% 100%, calc(110% + var(--uintro-lean)) 100%)}
+}
+
+@keyframes uintro-skip-in{ from{opacity:0} to{opacity:1} }
+
+/* --- 6a. Settled --------------------------------------------------------
+   JS adds this once the credit has landed. By then both wipes have finished
+   and nothing is being hidden, so the clip and the compositing hint are pure
+   cost — dropping them lets the text go back to painting as ordinary text
+   for the hold and the exit, which is when it is actually being read.
+
+   The three classes are deliberate: it has to outweigh the (0,2,1) of
+   .uintro--go .uintro__credit, which is still matching. */
+.uintro.uintro--settled .uintro__swoosh,
+.uintro.uintro--settled .uintro__credit{
+  animation:none;
+  clip-path:none;
+  will-change:auto;
+}
+
+/* --- 7. The exit --------------------------------------------------------
+   The overlay's leading edge runs off to the right at the same angle the
+   swoosh drew, uncovering the page from the left. The stack drifts with it
+   so the composition leaves rather than being sliced in half.           */
+html[data-utrc-intro="exiting"] .uintro{
+  animation:uintro-out var(--uintro-d-exit) var(--uintro-ease-wipe) both;
+}
+html[data-utrc-intro="exiting"] .uintro__stage{
+  animation:uintro-stage-out calc(var(--uintro-d-exit) * .55) var(--uintro-ease) both;
+}
+html[data-utrc-intro="exiting"] .uintro__skip{opacity:0;transition:opacity .15s linear}
+
+@keyframes uintro-out{
+  from{clip-path:polygon(-25% 0, 125% 0, 125% 100%, calc(-25% - var(--uintro-skew)) 100%)}
+  to  {clip-path:polygon(125% 0, 125% 0, 125% 100%, calc(125% - var(--uintro-skew)) 100%)}
+}
+@keyframes uintro-stage-out{
+  from{opacity:1;transform:translateY(-2.5vh) translateX(0)}
+  to  {opacity:0;transform:translateY(-2.5vh) translateX(5vw)}
+}
+
+/* --- 8. Reduced motion --------------------------------------------------
+   The composition still gets shown — a sponsor credit nobody sees is worse
+   than no animation — it just arrives whole and holds instead of drawing.
+   Retiming the tokens is the whole override: the JS flow is identical,
+   because the animations still start and still fire animationend.       */
+@media (prefers-reduced-motion:reduce){
+  :root{
+    --uintro-t-logo:0ms;     --uintro-d-logo:1ms;
+    --uintro-t-swoosh:0ms;   --uintro-d-swoosh:1ms;
+    --uintro-t-credit:0ms;   --uintro-d-credit:1ms;
+    --uintro-hold:1500ms;
+    --uintro-d-exit:260ms;
+  }
+  .uintro--go .uintro__skip{animation-delay:0ms}
+  html[data-utrc-intro="exiting"] .uintro{animation:uintro-fade-out var(--uintro-d-exit) linear both}
+  html[data-utrc-intro="exiting"] .uintro__stage{animation:none;opacity:1}
+}
+@keyframes uintro-fade-out{ from{opacity:1} to{opacity:0} }
+
+/* --- 9. Print ------------------------------------------------------------ */
+@media print{
+  .uintro{display:none!important}
+  html[data-utrc-intro]::before{display:none!important}
+}

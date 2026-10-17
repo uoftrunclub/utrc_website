@@ -5,9 +5,10 @@
    ========================================================================== */
 
 const SITE = {
-  /* ---- CONFIRM THESE THREE BEFORE YOU GO LIVE -------------------------- */
+  /* ---- CONFIRM THESE BEFORE YOU GO LIVE -------------------------------- */
   email:     'universityoftorontorunclub@gmail.com',
   instagram: 'https://www.instagram.com/uoftrunclub/',
+  whatsapp:  'https://chat.whatsapp.com/DECg4MwAKVjFVyNDkwBKhw',
   strava:    '',                           // ← optional club Strava URL
   /* ---------------------------------------------------------------------- */
 
@@ -175,6 +176,8 @@ const ICON_THEME = `
 const ICON = {
   ig: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>',
   mail: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>',
+  wa: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9z"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></svg>',
+  check: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg>',
   strava: '<svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.6 2 4 13.2h3.3L9.6 8.6l2.3 4.6h3.3zm4.9 11.2-1.7 3.4-1.7-3.4H8.6L12.8 22l4.2-8.8z"/></svg>'
 };
 
@@ -240,7 +243,8 @@ function buildFooter() {
   host.className = 'foot on-dark';
   const social = [
     ['Instagram', SITE.instagram, ICON.ig],
-    ['Email', 'mailto:' + SITE.email, ICON.mail],
+    SITE.whatsapp ? ['WhatsApp', SITE.whatsapp, ICON.wa] : null,
+    ['Email', 'mailto:' + SITE.email, ICON.mail, ' data-copy-mail title="Copy club email"'],
     SITE.strava ? ['Strava', SITE.strava, ICON.strava] : null
   ].filter(Boolean);
 
@@ -251,7 +255,7 @@ function buildFooter() {
           <img src="assets/img/utrc-logo.png" alt="UTRC" width="58" height="58">
           <p>University of Toronto Run Club. Social, drop&#8209;in, student&#8209;led. Founded January 2018.</p>
           <div class="socials">
-            ${social.map(([n, h, i]) => `<a href="${h}" aria-label="${n}"${h.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${i}</a>`).join('')}
+            ${social.map(([n, h, i, extra = '']) => `<a href="${h}" aria-label="${n}"${extra}${h.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${i}</a>`).join('')}
           </div>
         </div>
         <div>
@@ -268,6 +272,7 @@ function buildFooter() {
           <ul>
             <li><a href="join.html">New runner guide</a></li>
             <li><a href="join.html#faq">FAQ</a></li>
+            ${SITE.whatsapp ? `<li><a href="${SITE.whatsapp}" target="_blank" rel="noopener">WhatsApp updates</a></li>` : ''}
             <!-- Parked: Race board / Kit &amp; merch -->
           </ul>
         </div>
@@ -885,9 +890,16 @@ function boot() {
   mountTrail();
   observeReveal();
 
-  /* email + social links marked with data-mail / data-ig */
+  /* email + social links marked with data-mail / data-ig / data-wa */
   $$('[data-mail]').forEach(a => { a.href = 'mailto:' + SITE.email; if (!a.textContent.trim()) a.textContent = SITE.email; });
   $$('[data-ig]').forEach(a => { a.href = SITE.instagram; });
+  /* data-wa="icon" asks for the WhatsApp glyph in front of the label.
+     With no channel URL in the config the button takes itself off the page. */
+  $$('[data-wa]').forEach(a => {
+    if (!SITE.whatsapp) { a.remove(); return; }
+    a.href = SITE.whatsapp;
+    if (a.dataset.wa === 'icon') a.insertAdjacentHTML('afterbegin', ICON.wa);
+  });
   mountCopyEmail();
 }
 
@@ -942,6 +954,35 @@ function mountCopyEmail() {
       timer = setTimeout(() => {
         btn.classList.remove('is-copied');
         btn.innerHTML = original;
+      }, 2600);
+    });
+  });
+
+  /* The footer's mail square does the same thing in icon form: the envelope
+     swaps for a tick and the tile goes green for a couple of seconds. */
+  $$('a[data-copy-mail]').forEach(a => {
+    const envelope = a.innerHTML;
+    const label = a.getAttribute('aria-label') || 'Email';
+    let timer = null;
+
+    a.addEventListener('click', async e => {
+      e.preventDefault();
+      const ok = await copyText(SITE.email);
+
+      if (!ok) {                       /* clipboard blocked — do the old thing */
+        location.href = 'mailto:' + SITE.email;
+        return;
+      }
+
+      clearTimeout(timer);
+      a.classList.add('is-copied');
+      a.innerHTML = ICON.check;
+      a.setAttribute('aria-label', 'Club email copied');
+
+      timer = setTimeout(() => {
+        a.classList.remove('is-copied');
+        a.innerHTML = envelope;
+        a.setAttribute('aria-label', label);
       }, 2600);
     });
   });

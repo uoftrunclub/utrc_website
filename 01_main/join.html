@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>New Runner Guide — UTRC</title>
-<meta name="description" content="Never run with UTRC before? Here's exactly what happens: where to meet, the routes, what to bring, what to wear at any temperature, and answers to the questions everyone asks.">
+<meta name="description" content="Never run with UTRC before? Here's exactly what happens: where to meet, the routes, what to wear at any temperature, and answers to the questions everyone asks.">
 <meta name="theme-color" content="#F7F5F0">
 <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
@@ -38,6 +38,7 @@ d.dataset.theme=t;})(document.documentElement);</script>
     </p>
     <div class="btn-row" style="margin-top:2rem">
       <a class="btn" href="#faq" data-magnetic>Read the FAQ <span class="arrow">&rarr;</span></a>
+      <a class="btn btn--ghost" data-wa="icon" href="#" target="_blank" rel="noopener">WhatsApp updates</a>
       <a class="btn btn--ghost" data-ig href="#" target="_blank" rel="noopener">Ask us anything</a>
     </div>
   </div>
@@ -97,6 +98,8 @@ d.dataset.theme=t;})(document.documentElement);</script>
 </section>
 
 
+<!-- Parked: kit list, hidden for now. Unwrap the <template> to restore. -->
+<template data-parked="kit-list">
 <!-- ================================================== KIT LIST ========= -->
 <section class="sec sec--paper sec--tight" id="bring">
   <div class="shell">
@@ -128,6 +131,7 @@ d.dataset.theme=t;})(document.documentElement);</script>
     </div>
   </div>
 </section>
+</template>
 
 <!-- ============================================ DRESSING FOR IT ======== -->
 <!-- VERIFY: the bands below are written for a Toronto winter and are general
@@ -146,54 +150,66 @@ d.dataset.theme=t;})(document.documentElement);</script>
       </p>
     </div>
 
-    <div class="grid grid--4">
+    <div class="grid grid--5">
       <article class="card" data-reveal>
-        <span class="card__n">10&deg;C and up</span>
+        <span class="card__n">Above 10&deg;C</span>
         <h3>Mild</h3>
         <p>Most of September, and again from May.</p>
         <ul>
-          <li>Shorts, T-shirt or singlet</li>
-          <li>Cap and sunglasses for the Saturday morning run</li>
-          <li>Sunscreen — Front Campus has no shade</li>
-          <li>More water than you think you need</li>
+          <li>Short-sleeve shirt or singlet</li>
+          <li>Shorts</li>
+          <li>Cap, sunscreen and sunglasses for sunny runs</li>
         </ul>
       </article>
 
       <article class="card" data-reveal style="--d:80ms">
-        <span class="card__n">0&deg;C to 10&deg;C</span>
+        <span class="card__n">4&deg;C to 10&deg;C</span>
         <h3>Cool</h3>
         <p>Late autumn and early spring. The easiest running weather there is.</p>
         <ul>
-          <li>Long-sleeve top, shorts or light tights</li>
-          <li>Thin gloves — hands feel it first</li>
-          <li>A light windbreaker you can tie round your waist</li>
-          <li>Reflective layer for the 7&nbsp;PM runs once it gets dark early</li>
+          <li>Long-sleeve shirt</li>
+          <li>Cropped or full-length pants</li>
+          <li>A light sweatshirt over the top, if you want one</li>
+          <li>Reflective/bright clothing for the 7&nbsp;PM runs once it gets dark early</li>
         </ul>
       </article>
 
       <article class="card" data-reveal style="--d:160ms">
-        <span class="card__n">&minus;15&deg;C to 0&deg;C</span>
-        <h3>Cold</h3>
-        <p>A normal Toronto winter. Layers matter more than thickness.</p>
+        <span class="card__n">&minus;1&deg;C to 4&deg;C</span>
+        <h3>Chilly</h3>
+        <p>Late November, and again in March. Hands and ears feel it first.</p>
         <ul>
-          <li>Thermal base layer, then a mid layer over it</li>
-          <li>Full-length tights</li>
-          <li>Proper gloves, a hat over your ears, a neck gaiter</li>
-          <li>Wool or synthetic socks — never cotton once it is wet</li>
+          <li>Long-sleeve shirt</li>
+          <li>Pants or tights</li>
+          <li>Sweatshirt or fleece over the top</li>
+          <li>Light gloves and ear warmers</li>
         </ul>
       </article>
 
       <article class="card" data-reveal style="--d:240ms">
-        <span class="card__n">Below &minus;15&deg;C</span>
+        <span class="card__n">&minus;6&deg;C to &minus;1&deg;C</span>
+        <h3>Cold</h3>
+        <p>A normal Toronto winter. Layers matter more than thickness.</p>
+        <ul>
+          <li>Long-sleeve shirt, tights underneath if you want them</li>
+          <li>Fleece and pants over that</li>
+          <li>Lightweight jacket on top</li>
+          <li>Hat and heavier gloves</li>
+        </ul>
+      </article>
+
+      <article class="card" data-reveal style="--d:320ms">
+        <span class="card__n">Below &minus;6&deg;C</span>
         <h3>Deep cold</h3>
         <p>Windchill does the damage, not the number. Cover everything.</p>
         <ul>
-          <li>Two layers up top plus a windproof shell</li>
-          <li>Lined tights, or tights under trackpants</li>
-          <li>Gaiter over your face, mittens over gloves</li>
-          <li>Check Instagram before you leave — extreme cold moves or cancels a run</li>
+          <li>Long-sleeve shirt and tights</li>
+          <li>Fleece and pants over that</li>
+          <li>Lightweight jacket on top</li>
+          <li>Hat, neck gaiter, and two pairs of gloves</li>
         </ul>
       </article>
+
     </div>
   </div>
 </section>
@@ -231,36 +247,12 @@ d.dataset.theme=t;})(document.documentElement);</script>
              to the steps for the photo.</p>
           <div class="route__stats">
             <span><b>5 km</b>Distance</span>
-            <span><b>~35 min</b>Steady group</span>
-            <span><b>Flat</b>Terrain</span>
+            <span><b>~45 min</b>Estimated Time</span>
           </div>
         </div>
       </article>
 
-      <article class="route" data-reveal style="--d:100ms">
-        <svg class="route__map" viewBox="0 0 400 250" role="img" aria-label="Schematic of the Saturday 8K route">
-          <g class="grid-l" fill="none">
-            <path d="M0 62h400M0 125h400M0 188h400M100 0v250M200 0v250M300 0v250"/>
-          </g>
-          <path class="line" d="M50 54 L118 54 Q134 54 134 70 L134 148 Q134 164 150 164 L236 164 Q252 164 252 148 L252 96 Q252 80 268 80 L346 80 L346 196 L268 196 Q252 196 252 212 L252 220"/>
-          <circle class="dot" cx="50" cy="54" r="6"/>
-          <circle class="dot-r" cx="252" cy="220" r="6"/>
-          <text class="lbl" x="36" y="38">Start</text>
-          <text class="lbl" x="224" y="240">Finish</text>
-        </svg>
-        <div class="route__body">
-          <h3>Saturday 8K</h3>
-          <p>The long option on café-run mornings. Further from campus, more of the city,
-             a proper reason for a second coffee.</p>
-          <div class="route__stats">
-            <span><b>8 km</b>Distance</span>
-            <span><b>~50 min</b>Steady group</span>
-            <span><b>Rolling</b>Terrain</span>
-          </div>
-        </div>
-      </article>
-
-      <article class="route" data-reveal style="--d:200ms">
+      <article class="route route--cafe" data-reveal style="--d:100ms">
         <svg class="route__map" viewBox="0 0 400 250" role="img" aria-label="Schematic of the Saturday 5K café run">
           <g class="grid-l" fill="none">
             <path d="M0 62h400M0 125h400M0 188h400M100 0v250M200 0v250M300 0v250"/>
@@ -272,13 +264,34 @@ d.dataset.theme=t;})(document.documentElement);</script>
           <text class="lbl" x="262" y="228">Café</text>
         </svg>
         <div class="route__body">
-          <h3>Café 5K</h3>
+          <h3>Saturday Café 5K</h3>
           <p>Same Saturday start, shorter route, finishing at whichever partner café is
              looking after us that week.</p>
           <div class="route__stats">
             <span><b>5 km</b>Distance</span>
-            <span><b>~35 min</b>Steady group</span>
-            <span><b>Coffee</b>Included</span>
+            <span><b>~45 min</b>Estimated Time</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="route" data-reveal style="--d:200ms">
+        <svg class="route__map" viewBox="0 0 400 250" role="img" aria-label="Schematic of the Saturday 8K route">
+          <g class="grid-l" fill="none">
+            <path d="M0 62h400M0 125h400M0 188h400M100 0v250M200 0v250M300 0v250"/>
+          </g>
+          <path class="line" d="M50 54 L118 54 Q134 54 134 70 L134 148 Q134 164 150 164 L236 164 Q252 164 252 148 L252 96 Q252 80 268 80 L346 80 L346 196 L268 196 Q252 196 252 212 L252 220"/>
+          <circle class="dot" cx="50" cy="54" r="6"/>
+          <circle class="dot-r" cx="252" cy="220" r="6"/>
+          <text class="lbl" x="36" y="38">Start</text>
+          <text class="lbl" x="224" y="240">Finish</text>
+        </svg>
+        <div class="route__body">
+          <h3>Saturday Café 8K</h3>
+          <p>The long option on café-run mornings. Further from campus, more of the city,
+             a proper reason for a second coffee.</p>
+          <div class="route__stats">
+            <span><b>8 km</b>Distance</span>
+            <span><b>~1 hour</b>Estimated Time</span>
           </div>
         </div>
       </article>
@@ -305,79 +318,71 @@ d.dataset.theme=t;})(document.documentElement);</script>
       <div class="acc__item">
         <button class="acc__btn">Do I need to sign up or register? <span class="acc__ico" aria-hidden="true"></span></button>
         <div class="acc__panel"><div>
-          <p>No. UTRC is a drop-in club — turn up at the meeting point on any run day and you&rsquo;re in.
-             There&rsquo;s no form, no waiting list and no commitment to come back.</p>
+          <p>Nope! UTRC is a drop-in club. Feel free to show up at UC steps on any run day to join!</p>
+        </div></div>
+
+    </div>
+      <div class="acc__item">
+        <button class="acc__btn">Is there anywhere where I can leave my stuff? <span class="acc__ico" aria-hidden="true"></span></button>
+        <div class="acc__panel"><div>
+          <p>Unfortuantley UTRC does not have an official place for you to store your belongings so try and pack 
+             light with only things that you'll need for the run. If needed, Hart House has some lockers that you can 
+             borrow but only if you are have your own lock and are a UofT student.</p>
         </div></div>
       </div>
       <div class="acc__item">
         <button class="acc__btn">How fast do I have to be? <span class="acc__ico" aria-hidden="true"></span></button>
         <div class="acc__panel"><div>
-          <p>As fast as you are. Everyone sets off together and runs their own pace, and a
-             sweeper stays at the back and never passes anybody. If you need to walk, the sweeper
-             walks with you. That is what &ldquo;no one left behind&rdquo; actually means in practice.</p>
+          <p>However fast you are right now! Everyone sets off together and runs their own pace, and a
+             sweeper stays at the back and tries their best to support you.</p>
         </div></div>
       </div>
       <div class="acc__item">
         <button class="acc__btn">I&rsquo;ve never run 5K before. Is this for me? <span class="acc__ico" aria-hidden="true"></span></button>
         <div class="acc__panel"><div>
-          <p>Yes — that&rsquo;s the group we&rsquo;re proudest of. Join the social group, take walk breaks
-             whenever you want, and treat the distance as a target rather than a requirement.
+          <p>Yes, of course! Our pace is aimed to be conversational, and we make sure to stop at many traffic lights 
+            along the way for you to catch their breath. Many members have ran their first ever 5k with us.
              A lot of our regulars ran their first ever 5K on a Wednesday with us.</p>
         </div></div>
       </div>
       <div class="acc__item">
         <button class="acc__btn">Is it free? <span class="acc__ico" aria-hidden="true"></span></button>
         <div class="acc__panel"><div>
-          <p>Drop-in runs are free. Some special events — race entries, socials, kit — have a cost,
-             and we always say so up front on Instagram.</p>
+          <p>Yup! All of our events, including weekly runs, special events and socials are all free. Ocassionally,
+            we might host a special paid event but we'll make sure to let you know ahead of time on our Instagram or
+            Whatsapp channel.
+          </p>
         </div></div>
       </div>
       <div class="acc__item">
         <button class="acc__btn">Do I have to be a UofT student? <span class="acc__ico" aria-hidden="true"></span></button>
         <div class="acc__panel"><div>
-          <p>We&rsquo;re a University of Toronto student club, and our runs are built around the UofT
-             community — students across every faculty, plus staff and alumni. If you&rsquo;re outside
-             that and want to run with us, message us on Instagram first and we&rsquo;ll sort it out.</p>
+          <p>While we are a University of Toronto student club, and most of our members are UofT affiliated, recent grads and
+            students from other univesities are also welcome to join.</p>
         </div></div>
       </div>
       <div class="acc__item">
         <button class="acc__btn">What happens if it rains? <span class="acc__ico" aria-hidden="true"></span></button>
         <div class="acc__panel"><div>
           <p>We run. The only things that stop us are genuinely unsafe conditions — ice storms,
-             lightning, extreme cold warnings — and if a run is cancelled we post it on Instagram
-             stories a few hours beforehand. Check there before you leave.</p>
-        </div></div>
-      </div>
-      <div class="acc__item">
-        <button class="acc__btn">Can I wear headphones? <span class="acc__ico" aria-hidden="true"></span></button>
-        <div class="acc__panel"><div>
-          <p>We&rsquo;d rather you didn&rsquo;t wear anything that seals your ears — you need to hear traffic,
-             your leader and the person next to you. Open-ear headphones are a good compromise, and
-             most people find they don&rsquo;t want music once they&rsquo;re running in a pack that size.</p>
+             lightning and extreme cold warnings. If a run is cancelled we post it on Instagram
+             stories and will annouce it on our Whatsapp chennel a few hours beforehand. If weather conditions are unclear,
+             make sure to check before you leave.</p>
         </div></div>
       </div>
       <div class="acc__item">
         <button class="acc__btn">Can I come alone? <span class="acc__ico" aria-hidden="true"></span></button>
         <div class="acc__panel"><div>
-          <p>Almost everybody&rsquo;s first run is on their own. Find any exec or run leader at the start,
-             tell them it&rsquo;s your first time, and they&rsquo;ll put you with people running your pace.
-             You will not be standing on your own for long.</p>
+          <p> Of course! Many of our runners all joined on their own initally and were able to find friends 
+             and others to run with during the club. Most runners and usually very welcoming and eager to meet 
+             new people so don't be afraid to come alone for your first time!</p>
         </div></div>
       </div>
       <div class="acc__item">
         <button class="acc__btn">Is there anything after the run? <span class="acc__ico" aria-hidden="true"></span></button>
         <div class="acc__panel"><div>
-          <p>Usually. Saturdays finish at a partner café with a discount for runners, and
-             weekday runs often spill into food somewhere nearby. Stick around — it&rsquo;s where
-             the club actually happens.</p>
-        </div></div>
-      </div>
-      <div class="acc__item">
-        <button class="acc__btn">How do I become a run leader? <span class="acc__ico" aria-hidden="true"></span></button>
-        <div class="acc__panel"><div>
-          <p>Come to runs consistently, get to know the group, then talk to our VP Internal —
-             applications open at the start of each term. We currently have twelve leaders and
-             we&rsquo;re always short on sweepers for the social group.</p>
+          <p>Usually. Saturdays finish at a partner café with a discount for runners, and most runners usually stay
+             a little bit after weekday runs to chat.</p>
         </div></div>
       </div>
     </div>

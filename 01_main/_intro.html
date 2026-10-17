@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Intro — test page</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32">
+
+<!-- ==========================================================================
+     TEST PAGE. Not part of the site.
+
+     The underscore keeps it out of the build — make-deploy.js skips anything
+     starting with "_", so this file, _intro.css and _intro.js never reach
+     _deploy/ until you ask for them.
+
+     Preview it with the usual server, so the home page below can load:
+
+         node serve.js        →  http://localhost:8080/_intro.html
+
+     Opening this straight off disk works for the intro itself, but Chrome
+     will not let a file:// page frame another file:// page, so the home page
+     underneath comes up blank.
+
+     Everything below the DROP-IN block is test scaffolding.
+     ========================================================================== -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- ============ DROP-IN — these two lines are the whole feature ============
+     data-once is "always" here so it replays on every reload while you are
+     working on it. On a real page leave it off: the default is one play per
+     browser session, which is the behaviour you asked for.              -->
+<link rel="stylesheet" href="assets/css/_intro.css">
+<script src="assets/js/_intro.js" data-once="always"></script>
+<!-- ======================================================================= -->
+
+<style>
+  /* --- Test scaffolding only ------------------------------------------- */
+  html,body{margin:0;height:100%;background:#0B0B0C}
+
+  /* The real home page, sitting under the overlay so the hand-off is the
+     actual hand-off and not a mock-up of one. */
+  .stand-in{
+    position:fixed;inset:0;
+    width:100%;height:100%;
+    border:0;
+    display:block;
+  }
+
+  /* --- Dev bar ----------------------------------------------------------- */
+  .dev{
+    position:fixed;
+    left:clamp(12px,2vw,22px);
+    bottom:clamp(12px,2vw,22px);
+    z-index:2147483600;              /* above the overlay, so it stays usable */
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:9px 14px;
+    border-radius:999px;
+    background:rgba(11,11,12,.86);
+    border:1px solid rgba(255,255,255,.16);
+    backdrop-filter:blur(10px);
+    font-family:'Space Mono',ui-monospace,Consolas,monospace;
+    font-size:.6rem;
+    font-weight:700;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#D6D3CD;
+    transition:opacity .4s cubic-bezier(.22,1,.36,1);
+  }
+  .dev.is-dim{opacity:.18}            /* gets out of the way while it plays */
+  .dev:hover{opacity:1}
+
+  .dev__tag{color:#E24433}
+  .dev__sep{width:1px;align-self:stretch;background:rgba(255,255,255,.16)}
+
+  .dev button{
+    font:inherit;
+    color:inherit;
+    background:none;
+    border:0;
+    padding:4px 2px;
+    cursor:pointer;
+    letter-spacing:.14em;
+    opacity:.7;
+    transition:opacity .2s,color .2s;
+  }
+  .dev button:hover{opacity:1;color:#F7F5F0}
+  .dev button.is-on{opacity:1;color:#E24433}
+  .dev button:focus-visible{outline:2px solid #FF3A24;outline-offset:2px;border-radius:2px}
+
+  .dev__note{color:#8E8E96;letter-spacing:.1em;text-transform:none;font-weight:400}
+
+  @media (max-width:640px){
+    .dev{gap:9px;padding:7px 10px;font-size:.52rem}
+    .dev__note{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- The site itself, live, underneath. -->
+<iframe class="stand-in" src="index.html" title="UTRC home page" loading="eager"></iframe>
+
+<!-- --- Dev bar. Test page only — none of this ships. --------------------- -->
+<div class="dev" id="dev">
+  <span class="dev__tag">Intro test</span>
+  <div class="dev__sep"></div>
+  <button type="button" id="replay">Replay</button>
+  <div class="dev__sep"></div>
+  <button type="button" class="speed is-on" data-speed="1">1&times;</button>
+  <button type="button" class="speed" data-speed="2">0.5&times;</button>
+  <button type="button" class="speed" data-speed="4">0.25&times;</button>
+  <div class="dev__sep"></div>
+  <span class="dev__tag">Size</span>
+  <button type="button" class="scale" data-scale="1">1&times;</button>
+  <button type="button" class="scale" data-scale="1.5">1.5&times;</button>
+  <button type="button" class="scale is-on" data-scale="2">2&times;</button>
+  <button type="button" class="scale" data-scale="2.5">2.5&times;</button>
+  <div class="dev__sep"></div>
+  <span class="dev__note" id="total"></span>
+</div>
+
+<script>
+(function () {
+  var bar   = document.getElementById('dev');
+  var root  = document.documentElement;
+  var total = document.getElementById('total');
+
+  /* The timeline tokens, read once before anything overrides them. Scaling
+     these is how the speed buttons work — _intro.js reads the same values
+     back, so the JS stays in step with the CSS automatically. */
+  var KEYS = ['--uintro-t-logo','--uintro-d-logo',
+              '--uintro-t-swoosh','--uintro-d-swoosh',
+              '--uintro-t-credit','--uintro-d-credit',
+              '--uintro-hold','--uintro-d-exit'];
+
+  var base = {};
+  KEYS.forEach(function (k) {
+    base[k] = parseFloat(getComputedStyle(root).getPropertyValue(k)) || 0;
+  });
+
+  function runtime (mult) {
+    return (base['--uintro-t-credit'] + base['--uintro-d-credit'] +
+            base['--uintro-hold']     + base['--uintro-d-exit']) * mult;
+  }
+
+  function setSpeed (mult) {
+    KEYS.forEach(function (k) { root.style.setProperty(k, (base[k] * mult) + 'ms'); });
+    total.textContent = (runtime(mult) / 1000).toFixed(2) + 's total';
+  }
+
+  /* --- Remembering the settings ----------------------------------------
+     Replay reloads the page, so anything held only in the DOM is lost. Both
+     dials are kept in localStorage and restored below, which is also why a
+     setting survives closing the tab and coming back to it tomorrow. */
+  var STORE = 'utrc-intro-dev';
+
+  function load () {
+    try { return JSON.parse(localStorage.getItem(STORE)) || {}; }
+    catch (_) { return {}; }            /* private mode, or something stale */
+  }
+  function save (key, value) {
+    try {
+      var s = load();
+      s[key] = value;
+      localStorage.setItem(STORE, JSON.stringify(s));
+    } catch (_) { /* not worth caring about on a test page */ }
+  }
+
+  /* Both button groups behave identically: pick one, apply it, remember it. */
+  function group (sel, attr, apply) {
+    var btns = [].slice.call(document.querySelectorAll(sel));
+
+    function pick (value, remember) {
+      var matched = false;
+      btns.forEach(function (b) {
+        var on = b.dataset[attr] === String(value);
+        b.classList.toggle('is-on', on);
+        if (on) matched = true;
+      });
+      if (!matched) return false;       /* a saved value whose button is gone */
+      apply(Number(value));
+      if (remember) save(attr, value);
+      return true;
+    }
+
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () { pick(b.dataset[attr], true); });
+    });
+    return pick;
+  }
+
+  var pickSpeed = group('.speed', 'speed', setSpeed);
+  var pickScale = group('.scale', 'scale', function (v) {
+    root.style.setProperty('--uintro-scale', v);
+  });
+
+  /* Restore. This has to happen before _intro.js starts, or the intro plays
+     at one size and snaps to another. It does: this script runs while the
+     body is parsing, and the intro waits for DOMContentLoaded and then for
+     the webfont, both of which are later.
+
+     The fallbacks come from the stylesheet rather than being written out
+     again here, so changing --uintro-scale in _intro.css still shows up. */
+  var saved  = load();
+  var cssVar = function (n, d) {
+    return (getComputedStyle(root).getPropertyValue(n) || '').trim() || d;
+  };
+
+  if (!pickSpeed(saved.speed, false)) pickSpeed(1, false);
+  if (!pickScale(saved.scale, false)) pickScale(cssVar('--uintro-scale', 2), false);
+
+  document.getElementById('replay').addEventListener('click', function () {
+    /* Reload so the home page underneath starts from the top too, which is
+       the state a real first visit would be in. */
+    location.reload();
+  });
+
+  /* Fade the bar down while the intro runs, back up when it hands over.
+     Doubles as a demo of the event the overlay fires on its way out. */
+  bar.classList.add('is-dim');
+  document.addEventListener('utrc:intro-done', function () {
+    bar.classList.remove('is-dim');
+  });
+}());
+</script>
+
+</body>
+</html>
