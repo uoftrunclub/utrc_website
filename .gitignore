@@ -21,6 +21,9 @@ node_modules/
 # beside them stay tracked.
 01_main/gallery/[0-9][0-9][0-9][0-9]-*/
 
+# Personal notes. Kept on disk, not in the repo.
+GIT.md
+
 # Local archive and source material. Big, unchanging, and not the repo's job —
 # these are backed up to the club Google Drive instead.
 reference/
